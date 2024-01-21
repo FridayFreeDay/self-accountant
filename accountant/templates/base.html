@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<link rel="stylesheet" href="{% static "information/css/index.css" %}">
+
+<html>
+<head>
+<title> {{title}} </title>
+</head>
+<body>
+
+<h1 align="middle">{{ maintitle }}</h1>
+<div align="left">
+    {% for m in menu %}
+    <p><a href="#">{{m.title}}</a></p>
+    {% endfor %}
+</div>
+
+{% block content %} {% endblock content %}
+</body>
+</html>
