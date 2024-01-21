@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 
 
-
+# Меню для страницы(времееное место)
 menu = [
     {'title': "Главная страница", "url_name": "index"},
     {'title': "Мой кошелёк", "url_name": "wallet"},
@@ -12,7 +12,7 @@ menu = [
 ] 
 
 
-
+# Функция для работы с главной страницей сайта
 def index(request):
     data = {
         "maintitle": "SELF ACCOUNTANT",

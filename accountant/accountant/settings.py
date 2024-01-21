@@ -125,12 +125,16 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+# Путь для сохранения медиа файлов, URL для обращения к ним
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
+# Переопределение стандартной модели Юзера
 AUTH_USER_MODEL = 'users.User'
 
+
+# Перенаправление пользоватля после авторизации в системе, выхода из системы и при использовании функций
+# которые ему не доступны без авторизации
 LOGIN_REDIRECT_URL = 'index:home'
 LOGOUT_REDIRECT_URL = 'index:home'
 LOGIN_URL = 'users:login'

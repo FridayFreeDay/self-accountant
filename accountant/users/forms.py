@@ -1,22 +1,31 @@
 import datetime
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm,PasswordChangeForm
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    UserCreationForm,
+    PasswordChangeForm,
+)
 
 
+# Форма авторизации пользователя
 class LoginUserForm(AuthenticationForm):
+    # Переопределяем стандартный вид выбранных полей
     username = forms.CharField(max_length=255, label="Логин", widget=forms.TextInput())
     password = forms.CharField(
         max_length=255, label="Пароль", widget=forms.PasswordInput()
     )
 
+    # Определяем модель пользователя и выбираем поля для отображения в форме
     class Meta:
         model = get_user_model()
         fields = ["username", "password"]
 
 
+# Форма регистрации пользователя
 class RegisterUserForm(UserCreationForm):
-    username = username = forms.CharField(
+    # Переопределяем стандартный вид выбранных полей
+    username = forms.CharField(
         max_length=255, label="Логин", widget=forms.TextInput()
     )
     password1 = forms.CharField(
@@ -26,6 +35,8 @@ class RegisterUserForm(UserCreationForm):
         max_length=255, label="Подтвердите пароль", widget=forms.PasswordInput()
     )
 
+    # Определяем модель пользователя для формы, поля для отображения, переопределяем названия
+    # некоторых полей, переопределяем стандартный вид некоторых полей
     class Meta:
         model = get_user_model()
         fields = [
@@ -47,6 +58,7 @@ class RegisterUserForm(UserCreationForm):
             "last_name": forms.TextInput(),
         }
 
+    # Проверка на уникальность ПОЧТЫ
     def clean_email(self):
         email = self.cleaned_data["email"]
         if get_user_model().objects.filter(email=email).exists():
@@ -54,7 +66,11 @@ class RegisterUserForm(UserCreationForm):
         return email
 
 
+# Форма личного кабинета пользователя
 class ProfileUserForm(forms.ModelForm):
+    # Переопределяем стандартный вид выбранных полей и задаём, 
+    # что не можем редактировать username и email(disabled=True)
+    # определяем поле для выбора года и месяца рождения
     username = forms.CharField(
         max_length=255, label="Логин", disabled=True, widget=forms.TextInput()
     )
@@ -65,10 +81,12 @@ class ProfileUserForm(forms.ModelForm):
     date_birth = forms.DateField(
         label="Год рождения",
         widget=forms.SelectDateWidget(
-            years=tuple(range(this_year - 100, this_year - 5))
+            years=tuple(range(this_year - 100, this_year - 5)), months=tuple(range(1,13))
         ),
     )
-
+    
+    # Определяем модель пользователя для формы, выбираем поля для отображения,
+    # переименовываем оставшиеся поля для отображения, переопределяем стандартный вид оставшихся полей 
     class Meta:
         model = get_user_model()
         fields = ["username", "email", "date_birth", "first_name", "last_name"]
