@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div align="center">
+        {% if owner.wallet %}
+            <p>Владелец | {{owner.first_name}}</p>
+            <p>Доходы | {{owner.wallet.revenues}}</p>
+            <p>Расходы | {{owner.wallet.expenses}}</p>
+        {% else %}
+            <p><a href="{% url "users:create_wallet" %}">Создать кошелёк</a></p>
+        {% endif %}      
+    </div>
+{% endblock content %}
+

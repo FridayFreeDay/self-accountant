@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-o1kvgfzb88oad&&fl!i3eh=ttxh4i)+%q(s5rjl(547s-3tguf
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+INTERNAL_IPS = ["127.0.0.1",]
 
 # Application definition
 
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'information',
     'users',
+
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -50,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'accountant.urls'
@@ -65,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'users.context_processors.get_menu_context',
             ],
         },
     },
@@ -135,6 +140,6 @@ AUTH_USER_MODEL = 'users.User'
 
 # Перенаправление пользоватля после авторизации в системе, выхода из системы и при использовании функций
 # которые ему не доступны без авторизации
-LOGIN_REDIRECT_URL = 'index:home'
-LOGOUT_REDIRECT_URL = 'index:home'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'users:login'

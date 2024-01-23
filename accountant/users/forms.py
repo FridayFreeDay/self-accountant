@@ -1,11 +1,10 @@
 import datetime
 from django import forms
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import (
-    AuthenticationForm,
-    UserCreationForm,
-    PasswordChangeForm,
-)
+from django.contrib.auth import get_user, get_user_model
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
+from django.shortcuts import get_object_or_404
+
+from users.models import Wallet
 
 
 # Форма авторизации пользователя
@@ -70,20 +69,17 @@ class RegisterUserForm(UserCreationForm):
 class ProfileUserForm(forms.ModelForm):
     # Переопределяем стандартный вид выбранных полей и задаём, 
     # что не можем редактировать username и email(disabled=True)
-    # определяем поле для выбора года и месяца рождения
+    # определяем поле для выбора года, месяца и дня рождения
     username = forms.CharField(
         max_length=255, label="Логин", disabled=True, widget=forms.TextInput()
     )
     email = forms.CharField(
-        max_length=255, label="E-mail", disabled=True, widget=forms.TextInput()
-    )
+        max_length=255, label="E-mail", disabled=True, widget=forms.TextInput(),
+    required=False)
     this_year = datetime.date.today().year
     date_birth = forms.DateField(
-        label="Год рождения",
-        widget=forms.SelectDateWidget(
-            years=tuple(range(this_year - 100, this_year - 5)), months=tuple(range(1,13))
-        ),
-    )
+        label = "Дата рождения",
+        widget=forms.SelectDateWidget(years=tuple(range(this_year - 100, this_year - 5))))
     
     # Определяем модель пользователя для формы, выбираем поля для отображения,
     # переименовываем оставшиеся поля для отображения, переопределяем стандартный вид оставшихся полей 
@@ -98,3 +94,10 @@ class ProfileUserForm(forms.ModelForm):
             "first_name": forms.TextInput(),
             "last_name": forms.TextInput(),
         }
+
+# Форма для добавления кошелька пользователю
+class AddWalletForm(forms.ModelForm):
+    class Meta:
+        model = Wallet
+        fields = ["revenues", "expenses"]
+        

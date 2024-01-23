@@ -10,4 +10,7 @@ urlpatterns = [
     path("register/", views.RegistrationUser.as_view(), name="register"),
     path("login/", views.LoginUser.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
+    path("profile/", views.ProfileUser.as_view(), name="profile"),
+    path("wallet/", views.WalletUser.as_view(), name="wallet"),
+    path("create-wallet/", views.wallet_create, name="create_wallet"),
 ]
