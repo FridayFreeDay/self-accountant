@@ -4,34 +4,37 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col-12">
-        <form class="text-center">
-            {% if owner.wallet %}
-                <div class="row">
-                    <div class="col-12">
-                        <div class="acc_circle">
-                            <i class="icon-up-circled"></i>
-                            <h5 class="text-center color1">Доходы - {{owner.wallet.revenues}} руб.</h5>
+<section class="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form class="text-center">
+                    {% if owner.wallet %}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="acc_circle">
+                                    <i class="icon-up-circled"></i>
+                                    <h5 class="text-center color1">Доходы - {{owner.wallet.revenues}} руб.</h5>
+                                </div>
+                                <div class="line"></div>
+                            </div>
                         </div>
-                        <div class="line"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="acc_circle">
-                            <i class="icon-down-circled"></i>
-                            <h5 class="text-center color1">Расходы - {{owner.wallet.expenses}} руб.</h5>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="acc_circle">
+                                    <i class="icon-down-circled"></i>
+                                    <h5 class="text-center color1">Расходы - {{owner.wallet.expenses}} руб.</h5>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            {% else %}
-                <p><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
-            {% endif %}      
-        </form>    
+                    {% else %}
+                        <p><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
+                    {% endif %}      
+                </form>    
+            </div>
+        </div>
     </div>
-</div>
-
+</section>
 
 {% endblock content %}
 

@@ -4,21 +4,25 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col-12">
-        <h2 class="text-center color1 mb-5" style="margin-top: -50px">
-            {{ title }}
-        </h2>
-        <form method="post" class="text-center">
-            {% csrf_token %}
-            <div class='form-error'>{{ form.non_field_errors }}</div>
-            {% for f in form %}
-                <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}</label>{{ f }}</p>
-                <div class="form-error">{{ f.errors }}</div>   
-            {% endfor %}
-            <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
-        </form> 
+<section class="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center color1 mb-5" style="margin-top: -50px">
+                    {{ title }}
+                </h2>
+                <form method="post" class="text-center">
+                    {% csrf_token %}
+                    <div class='form-error'>{{ form.non_field_errors }}</div>
+                    {% for f in form %}
+                        <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}</label>{{ f }}</p>
+                        <div class="form-error">{{ f.errors }}</div>   
+                    {% endfor %}
+                    <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
+                </form> 
+            </div>
+        </div>
     </div>
-</div>
+</section>
 
 {% endblock content %}
