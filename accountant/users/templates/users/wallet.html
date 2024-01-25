@@ -1,14 +1,37 @@
 {% extends "base.html" %}
+{% load static %}
+
 
 {% block content %}
-    <div align="center">
-        {% if owner.wallet %}
-            <p>Владелец | {{owner.first_name}}</p>
-            <p>Доходы | {{owner.wallet.revenues}}</p>
-            <p>Расходы | {{owner.wallet.expenses}}</p>
-        {% else %}
-            <p><a href="{% url "users:create_wallet" %}">Создать кошелёк</a></p>
-        {% endif %}      
+
+<div class="row">
+    <div class="col-12">
+        <form class="text-center">
+            {% if owner.wallet %}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="acc_circle">
+                            <i class="icon-up-circled"></i>
+                            <h5 class="text-center color1">Доходы - {{owner.wallet.revenues}} руб.</h5>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="acc_circle">
+                            <i class="icon-down-circled"></i>
+                            <h5 class="text-center color1">Расходы - {{owner.wallet.expenses}} руб.</h5>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
+            {% endif %}      
+        </form>    
     </div>
+</div>
+
+
 {% endblock content %}
 

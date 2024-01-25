@@ -1,19 +1,23 @@
 {% extends "base.html" %}
 {% load static %}
 
+
 {% block content %}
-    <div align="center">  
-        <form action="" method="POST" enctype="multipart/form-data">
+
+<div class="row">
+    <div class="col-12">
+        <form action="" method="POST" class="text-center" enctype="multipart/form-data">
             {% csrf_token %}
-            <p>Владелец | {{name}}</p>
             <div class='form-error'>{{ form.non_field_errors }}</div>
             {% for f in form %}
                 <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}</label>{{ f }}</p>
                 <div class="form-error">{{ f.errors }}</div>   
             {% endfor %}
-        <p><button type="submit">Сохранить</button></p>
-        </form>
+            <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
+        </form> 
     </div>
+</div>
+
 {% endblock content %}
 
 

@@ -1,32 +1,58 @@
 {% load static %}
 <!DOCTYPE html>
-<link rel="stylesheet" href="{% static "information/css/index.css" %}">
 
 <html>
 <head>
-<title> {{title}} </title>
+    <link rel="shortcut icon" href="{% static "img/wallet.ico" %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/fontello.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <title> {{title}} </title>
 </head>
 <body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <div class="text-start to-bottom">
+                        {% for m in mainmenu %}
+                            <p><a href="{% url m.url_name %}" class="btn btn-ls btn-sm fixed-font-size">{{m.title}}</a></p>
+                        {% endfor %}
+                    </div>  
+                </div>
+                    <div class="col-4">
+                        <h1 class="text-center text-white">
+                            SELF ACCOUNTANT
+                        </h1>
+                    </div>
+                <div class="col-4">
+                    <div class="text-end to-bottom">
+                        {% if user.is_authenticated %}
+                            <p><a href="{%url "users:profile" %}" class="btn btn-rs btn-sm fixed-font-size">Профиль</a></p>
+                            <p><a href="{% url "users:logout" %}" class="btn btn-rs btn-sm fixed-font-size">Выйти</a></p>                      
+                        {% else %}
+                            <p><a href="{% url "users:login" %}" class="btn btn-rs btn-sm fixed-font-size">Войти</a></p>
+                            <p><a href="{% url "users:register" %}" class="btn btn-rs btn-sm fixed-font-size">Регистрация</a></p>
+                        {% endif %}  
+                    </div>     
+                </div>    
+            </div>
+        </div>
+    </header>
 
-<h1 align="middle">SELF ACCOUNTANT</h1>
-<div align="left" class="div1">
-    {% for m in mainmenu %}
-    <p><a href="{% url m.url_name %}">{{m.title}}</a></p>
-    {% endfor %}
-</div>
-<div align="right" class="div1">
-    <ul>
-    {% if user.is_authenticated %}
-        <li><a href="{%url "users:profile" %}">Профиль</a> | <a href="{% url "users:logout" %}">Выйти</a></li>
-    {% else %}
-        <li><a href="{% url "users:login" %}">Войти</a> | <a href="{% url "users:register" %}">Регистрация</a></li>
-    {% endif %}
-    </ul>
-</div>
-<div>
-{% block content %} 
 
-{% endblock content %}
-</div>
+<section class="about">
+    <div class="container">
+        {% block content %} 
+
+        {% endblock content %}  
+    </div>
+</section>
+
+<footer>
+    
+</footer>
+
+
 </body>
 </html>

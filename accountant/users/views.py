@@ -71,7 +71,8 @@ def wallet_create(request):
         form = AddWalletForm()
     data = {
         "name": request.user.first_name,
-        "form": form
+        "form": form,
+        "title": "Создание кошелька",
     }
     return render(request, "users/create_wallet.html", data)
 
