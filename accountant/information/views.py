@@ -13,3 +13,8 @@ def index(request):
     }
     return render(request, "information/index.html", context=data)
 
+
+# def record(request, rec_pk):
+#     if request.method == "POST":
+#         form = 
+

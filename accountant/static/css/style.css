@@ -12,9 +12,9 @@ form {
 }
 
 :root{
-    --color1:#777de3;
-    --color2:#a777e3;
-    --сolor3: #77b3e3;
+    --color1:#418393;
+    --color2:#164147;
+    --сolor3: #88B5A2;
   }
   
 header, footer, section{
@@ -34,7 +34,7 @@ header, footer{
   border-radius: 4px;
  }
 .form-class-active:hover {
-  background-color: #777de3; 
+  background-color: var(--color1); 
   color: white; 
   border-width: 2px;
   border-color: black;
