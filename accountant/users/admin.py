@@ -1,4 +1,5 @@
 from django.contrib import admin
+from information.admin import RecordAdmin
 from users.models import User, Wallet
 
 # Регистрация моделей в админке
@@ -10,7 +11,7 @@ class WalletAdmin(admin.TabularInline):
     # Снаружи
     list_display = ("id", "own")
     # Внутри
-    fields = ["own", "revenues", "expenses", "owner"]
+    fields = ["own", "revenues"]
     readonly_fields = ["own"]
     can_delete = False
 
@@ -24,5 +25,5 @@ class UserAdmin(admin.ModelAdmin):
     save_on_top = True
     fields = [("username", "email"), "photo", "date_birth", 
               "is_superuser", "is_staff", "is_active", "groups"]
-    inlines = [WalletAdmin]
+    inlines = [WalletAdmin, RecordAdmin]
 

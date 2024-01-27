@@ -6,5 +6,5 @@ from . import views
 urlpatterns = [
     path("", views.index, name="home"),
     # path("category/<slug:cat_slug>", views.index, name="catogory"),
-    # path("record/<int:rec_pk>", views.record, name="record"),
+    path("add-record/", views.add_record, name="add_record"),
 ]

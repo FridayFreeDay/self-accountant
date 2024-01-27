@@ -20,17 +20,56 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12" style="margin-bottom: 50px">
                                 <div class="acc_circle">
                                     <i class="icon-down-circled"></i>
-                                    <h5 class="text-center color1">Расходы - {{owner.wallet.expenses}} руб.</h5>
+                                    <h5 class="text-center color1">Расходы - {{expenses}} руб.</h5>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p><a href="{% url "add_record" %}" class="btn btn-login btn-sm" >Добавить запись</a></p>
                             </div>
                         </div>
                     {% else %}
                         <p><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
                     {% endif %}      
                 </form>    
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% if len != 0 %}
+                    <table class="table table-acc table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="text-align: center">#</th>
+                            <th scope="col" style="text-align: center">Описание</th>
+                            <th scope="col" style="text-align: center">Категория</th>
+                            <th scope="col" style="text-align: center">Сумма</th>
+                            <th scope="col" style="text-align: center">Дата и время</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for i, rec in record %}
+                            <tr>
+                                <th scope="row" style="text-align: center">{{ i }}</th>
+                                {% for r in rec %}
+                                <td style="text-align: center">{{ r }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <h2 class="text-center color1 text-uppercase">Пока записей нет</h2>
+                  {% endif %}
             </div>
         </div>
     </div>

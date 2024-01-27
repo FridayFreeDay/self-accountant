@@ -7,10 +7,6 @@ a {
   text-decoration: none;
 }
 
-form {
-  padding: 0 5px;
-}
-
 :root{
     --color1:#418393;
     --color2:#164147;
@@ -25,7 +21,27 @@ header, footer{
     background: linear-gradient(to right,  var(--color1) 0%, var(--color2) 100%);
 }
 
+/* Таблица */
+
+td, th{
+  text-align: center;
+  width: 500px;
+  height: 50px;
+}
+.table-acc{
+  --bs-table-color:white;
+  --bs-table-bg: var(--color2);
+  --bs-table-border-color:var(--color3);
+  --bs-table-striped-bg:var(--color1);--bs-table-striped-color: white;
+  width: 100%;
+  word-break: break-all;
+}
+
 /* Форма */
+
+form {
+  padding: 0 5px;
+}
 .form-class-active {
   background-color: var(--сolor3); 
   color: white; 

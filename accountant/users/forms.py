@@ -97,7 +97,7 @@ class ProfileUserForm(forms.ModelForm):
 class AddWalletForm(forms.ModelForm):
     class Meta:
         model = Wallet
-        fields = ["revenues", "expenses"]
+        fields = ["revenues"]
         widgets = {
             "revenues": forms.TextInput(attrs={"class": "form-class-active"}),
             "expenses": forms.TextInput(attrs={"class": "form-class-active"}),

@@ -1,16 +1,15 @@
 from django import forms
 
-# from information.models import Category, Record
+from information.models import Record
 
 
-# Categories = Category.objects.all()
-# Cat = []
-# for c in Categories:
-#     Cat.append(c.name)
-
-# class RecordForm(forms.ModelForm):
-#     categories = forms.
-
-#     class Meta:
-#         model = Record
-#         fields = ["title", "amount"]
+# Форма создания записи о тратах
+class RecordForm(forms.ModelForm):
+    class Meta:
+        model = Record
+        fields = ["title", "amount", "categories"]
+        widgets = {
+            "title": forms.Textarea(attrs={"class": "form-class-active", "cols": "30", "rows": "2", 'style':'resize:none;'}),
+            "amount": forms.TextInput(attrs={"class": "form-class-active"}),
+            "categories": forms.Select(attrs={"class": "form-class-active"}),
+        }

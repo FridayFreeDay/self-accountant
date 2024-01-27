@@ -1,11 +1,11 @@
 from typing import Any
 from django.contrib.auth import get_user_model
 from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView 
 from django.contrib.auth.views import LoginView
+from information.models import Record
 from users.models import User, Wallet 
 from users.forms import AddWalletForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -41,20 +41,26 @@ class ProfileUser(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None) -> Model:
         return get_object_or_404(User, username=self.request.user.username)
-    
-# Вывод кошелька пользователя
-class WalletUser(LoginRequiredMixin, DetailView):
-    template_name = "users/wallet.html"
-    context_object_name = "owner"
-
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['title'] = "Кошелёк"
-        return context
-    
-    def get_object(self, queryset=None):
-        return get_object_or_404(User, username=self.request.user.username)
-
+ 
+# Вывод кошелька пользователя 
+@login_required
+def wallet_user(request):
+    rec = Record.objects.filter(buyer=request.user)
+    record = []
+    expenses = 0
+    for r in rec:
+        expenses += r.amount
+        record.append([r.title, r.categories.name, r.amount, r.time_create])
+    len_rec = len(record)
+    record = enumerate(record, 1)
+    data ={
+        "owner": get_object_or_404(User, username=request.user.username),
+        "title": "Кошелёк",
+        "record": record,
+        "expenses": expenses,
+        "len": len_rec,
+    }
+    return render(request, "users/wallet.html", data)
 
 # Создание кошелька пользователя, если его нет
 @login_required
