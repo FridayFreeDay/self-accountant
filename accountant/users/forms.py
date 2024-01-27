@@ -100,7 +100,13 @@ class AddWalletForm(forms.ModelForm):
         fields = ["revenues"]
         widgets = {
             "revenues": forms.TextInput(attrs={"class": "form-class-active"}),
-            "expenses": forms.TextInput(attrs={"class": "form-class-active"}),
         }
 
-        
+# Форма для изменения значения дохода пользователя
+class ChangeWalletForm(forms.ModelForm):
+    class Meta:
+        model = Wallet
+        fields = ["revenues"]
+        widgets = {
+            "revenues": forms.TextInput(attrs={"class": "form-class-active"}),
+        }

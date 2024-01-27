@@ -1,13 +1,15 @@
 from typing import Any
 from django.contrib.auth import get_user_model
 from django.db.models.base import Model as Model
+from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView 
 from django.contrib.auth.views import LoginView
+from users.services import records_user
 from information.models import Record
 from users.models import User, Wallet 
-from users.forms import AddWalletForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm
+from users.forms import AddWalletForm, ChangeWalletForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
@@ -42,23 +44,24 @@ class ProfileUser(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None) -> Model:
         return get_object_or_404(User, username=self.request.user.username)
  
-# Вывод кошелька пользователя 
+# Вывод кошелька пользователя и его трат, возможность добавлять новые записи и изменять доход
 @login_required
 def wallet_user(request):
-    rec = Record.objects.filter(buyer=request.user)
-    record = []
-    expenses = 0
-    for r in rec:
-        expenses += r.amount
-        record.append([r.title, r.categories.name, r.amount, r.time_create])
-    len_rec = len(record)
-    record = enumerate(record, 1)
+    if request.method == "POST":
+        form_modal = ChangeWalletForm(request.POST)
+        if form_modal.is_valid():
+            f = form_modal.cleaned_data
+            Wallet.objects.filter(own=request.user.email).update(revenues=f["revenues"])
+    else:
+        form_modal = ChangeWalletForm()
+    record, len_rec, expenses = records_user(request)
     data ={
         "owner": get_object_or_404(User, username=request.user.username),
         "title": "Кошелёк",
         "record": record,
-        "expenses": expenses,
         "len": len_rec,
+        "expenses": expenses,
+        "modal": form_modal,
     }
     return render(request, "users/wallet.html", data)
 
@@ -68,9 +71,9 @@ def wallet_create(request):
     if request.method == "POST":
         form = AddWalletForm(request.POST)
         if form.is_valid():
-            f = form.cleaned_data 
+            f = form.cleaned_data
             f["own"] = request.user.email
-            f["owner"] = request.user         
+            f["owner"] = request.user
             Wallet.objects.create(**f)
             return redirect("users:wallet")
     else:
@@ -81,5 +84,3 @@ def wallet_create(request):
         "title": "Создание кошелька",
     }
     return render(request, "users/create_wallet.html", data)
-
-    

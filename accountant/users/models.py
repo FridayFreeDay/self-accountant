@@ -11,9 +11,9 @@ class User(AbstractUser):
 
 # Модель кошелька, связанная с пользователем
 class Wallet(models.Model):
-    own = models.CharField(max_length=1000, blank=True, unique=True, verbose_name="Email владельца")
-    revenues = models.DecimalField(blank=True, max_digits = 20, validators=[validate_positive], decimal_places = 2, verbose_name="Доходы:")
-    expenses = models.DecimalField(blank=True, null=True, max_digits = 20, decimal_places = 2, verbose_name="Расходы:")
+    own = models.CharField(max_length=1000, db_index=True, blank=True, unique=True, verbose_name="Email владельца")
+    revenues = models.DecimalField(null=True, default=0, max_digits = 17, decimal_places = 2, validators=[validate_positive], verbose_name="Доходы:")
+    expenses = models.DecimalField(blank=True, null=True, max_digits = 17, decimal_places = 2, verbose_name="Расходы:")
     owner=models.OneToOneField(to="User", on_delete=models.CASCADE, null=True, blank=True, related_name="wallet", verbose_name="Владелец")
 
     def __str__(self) -> str:

@@ -8,41 +8,72 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form class="text-center">
-                    {% if owner.wallet %}
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="acc_circle">
-                                    <i class="icon-up-circled"></i>
+                {% if owner.wallet %}
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <div class="acc_circle text-center">
+                                <i class="icon-up-circled"></i>
+                                {% if owner.wallet.revenues %}
                                     <h5 class="text-center color1">Доходы - {{owner.wallet.revenues}} руб.</h5>
+                                {% else %}
+                                    <h5 class="text-center color1">Доходы - 0 руб.</h5>
+                                {% endif %}
+                            </div>
+
+                            <!-- Modal button -->
+                            <button type="button" class="btn btn-login btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Изменить
+                            </button>
+                            <div class="line"></div>
+                                
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Изменение дохода</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" class="text-center">
+                                                {% csrf_token %} 
+                                                <div class='form-error'>{{ modal.non_field_errors }}</div>
+                                                {% for m in modal %}
+                                                    <p><label class="form-label" for="{{m.id_for_label}}">{{m.label}}</label>{{m}}</p>
+                                                    <div class="form-error">{{ m.errors }}</div>  
+                                                {% endfor %}
+                                                <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
+                                            </form> 
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="line"></div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12" style="margin-bottom: 50px">
-                                <div class="acc_circle">
-                                    <i class="icon-down-circled"></i>
-                                    <h5 class="text-center color1">Расходы - {{expenses}} руб.</h5>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="margin-bottom: 100px">
+                            <div class="acc_circle">
+                                <i class="icon-down-circled"></i>
+                                <h5 class="text-center color1">Расходы - {{expenses}} руб.</h5>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <p><a href="{% url "add_record" %}" class="btn btn-login btn-sm" >Добавить запись</a></p>
-                            </div>
-                        </div>
-                    {% else %}
-                        <p><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
-                    {% endif %}      
-                </form>    
+                    </div>
+                {% else %}
+                    <p class="text-center"><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
+                {% endif %}        
             </div>
         </div>
     </div>
 </section>
 
+{% if owner.wallet %}
 <section class="about">
     <div class="container">
+        <div class="row text-center" style="margin-bottom: 50px">
+            <div class="col-12">
+                <p><a href="{% url "add_record" %}" class="btn btn-login btn-sm" >Добавить запись</a></p>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
                 {% if len != 0 %}
@@ -68,12 +99,13 @@
                         </tbody>
                     </table>
                     {% else %}
-                    <h2 class="text-center color1 text-uppercase">Пока записей нет</h2>
+                    <h1 class="text-center color1 text-uppercase">Пока записей нет</h1>
                   {% endif %}
             </div>
         </div>
     </div>
 </section>
 
+{% endif %}
 {% endblock content %}
 
