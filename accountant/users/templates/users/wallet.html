@@ -4,68 +4,6 @@
 
 {% block content %}
 
-<section class="about">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                {% if owner.wallet %}
-                    <div class="row">
-                        <div class="col-12 text-center">
-                            <div class="acc_circle text-center">
-                                <i class="icon-up-circled"></i>
-                                {% if owner.wallet.revenues %}
-                                    <h5 class="text-center color1">Доходы - {{owner.wallet.revenues}} руб.</h5>
-                                {% else %}
-                                    <h5 class="text-center color1">Доходы - 0 руб.</h5>
-                                {% endif %}
-                            </div>
-
-                            <!-- Modal button -->
-                            <button type="button" class="btn btn-login btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Изменить
-                            </button>
-                            <div class="line"></div>
-                                
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Изменение дохода</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="POST" class="text-center">
-                                                {% csrf_token %} 
-                                                <div class='form-error'>{{ modal.non_field_errors }}</div>
-                                                {% for m in modal %}
-                                                    <p><label class="form-label" for="{{m.id_for_label}}">{{m.label}}</label>{{m}}</p>
-                                                    <div class="form-error">{{ m.errors }}</div>  
-                                                {% endfor %}
-                                                <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
-                                            </form> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12" style="margin-bottom: 100px">
-                            <div class="acc_circle">
-                                <i class="icon-down-circled"></i>
-                                <h5 class="text-center color1">Расходы - {{expenses}} руб.</h5>
-                            </div>
-                        </div>
-                    </div>
-                {% else %}
-                    <p class="text-center"><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
-                {% endif %}        
-            </div>
-        </div>
-    </div>
-</section>
-
 {% if owner.wallet %}
 <section class="about">
     <div class="container">
@@ -74,38 +12,127 @@
                 <p><a href="{% url "add_record" %}" class="btn btn-login btn-sm" >Добавить запись</a></p>
             </div>
         </div>
+        <div class="row text-center" style="margin-bottom: 50px">
+            <div class="col-12">
+                <p id ="table_id"></p>
+                <form class="d-flex" role="search" method="GET">
+                    <input class="form-control me-2" type="text" placeholder="Поиск: описание/категория/сумма" aria-label="Поиск" name="q">
+                    <a href="{% url "users:wallet" %}"><button class="btn btn-login" type="submit">Поиск</button></a>
+                </form>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
                 {% if len != 0 %}
-                    <table class="table table-acc table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col" style="text-align: center">#</th>
-                            <th scope="col" style="text-align: center">Описание</th>
-                            <th scope="col" style="text-align: center">Категория</th>
-                            <th scope="col" style="text-align: center">Сумма</th>
-                            <th scope="col" style="text-align: center">Дата и время</th>
-                        </tr>
+                    <table class="table table-primary table-hover table_block" id="1">
+                        <thead class="table-warning">
+                            <tr>
+                                <th scope="col" style="text-align: center">Описание</th>
+                                <th scope="col" style="text-align: center">Категория</th>
+                                <th scope="col" style="text-align: center">Сумма</th>
+                                <th scope="col" style="text-align: center">Дата и время</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            {% for i, rec in record %}
+                            {% for rec in record %}
                             <tr>
-                                <th scope="row" style="text-align: center">{{ i }}</th>
-                                {% for r in rec %}
-                                <td style="text-align: center">{{ r }}</td>
-                                {% endfor %}
+                                <td style="text-align: center">{{ rec.title }}</td>
+                                <td style="text-align: center">{{ rec.categories }}</td>
+                                <td style="text-align: center">{{ rec.amount }}</td>
+                                <td style="text-align: center">{{ rec.time_create }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                    {% else %}
+
+                    <nav class="about">
+                        <ul class="pagination justify-content-center ul-pag">
+                            {% if record.has_previous %}
+                                <li class="page-item">
+                                <a class="page-link" href="?page={{record.previous_page_number}}#table_id">Предыдущая</a>
+                            {% else %}
+                                <li class="page-item disabled">
+                                <a class="page-link">Предыдущая</a>
+                            {% endif %}
+                                </li>
+                            {% for page in record.paginator.page_range %}
+                                {% if record.number == page %}
+                                    <li class="page-item active"><a class="page-link" href="?page={{page}}#table_id">{{ page }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{page}}#table_id">{{ page }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if record.has_next %}
+                                <li class="page-item">
+                                <a class="page-link" href="?page={{record.next_page_number}}#table_id">Следующая</a>
+                            {% else %}
+                                <li class="page-item disabled">
+                                <a class="page-link">Следующая</a>
+                            {% endif %}
+                                </li>
+                        </ul>
+                    </nav>
+                {% else %}
                     <h1 class="text-center color1 text-uppercase">Пока записей нет</h1>
-                  {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
 </section>
-
 {% endif %}
+
+<section class="about">
+    <div class="container">
+        {% if owner.wallet %}
+            <div class="row text-center">
+                <div class="col-12">
+                    {% if owner.wallet.revenues %}
+                        <h5 class="text-center color1 mb-5">Доход - {{owner.wallet.revenues}} руб.</h5>
+                    {% else %}
+                        <h5 class="text-center color1 mb-5">Доход - 0 руб.</h5>
+                    {% endif %}
+
+                    <!-- Modal button -->
+                    <button type="button" class="btn btn-login btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Изменить
+                    </button>
+
+                    <div class="line"></div>
+                        
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Изменение дохода</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" class="text-center">
+                                        {% csrf_token %} 
+                                        <div class='form-error'>{{ modal.non_field_errors }}</div>
+                                        {% for m in modal %}
+                                            <p><label class="form-label" for="{{m.id_for_label}}">{{m.label}}</label>{{m}}</p>
+                                            <div class="form-error">{{ m.errors }}</div>  
+                                        {% endfor %}
+                                        <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
+                                    </form> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" style="margin-bottom: 100px">
+                        <h5 class="text-center color1 mt-3">Расходы - {{expenses}} руб.</h5>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-center"><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
+        {% endif %}        
+    </div>
+</section>
+
 {% endblock content %}
 

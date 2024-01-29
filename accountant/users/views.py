@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView 
 from django.contrib.auth.views import LoginView
-from users.services import records_user
+from users.services import pagination_records, records_user, search
 from information.models import Record
 from users.models import User, Wallet 
 from users.forms import AddWalletForm, ChangeWalletForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm
@@ -44,7 +44,7 @@ class ProfileUser(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None) -> Model:
         return get_object_or_404(User, username=self.request.user.username)
  
-# Вывод кошелька пользователя и его трат, возможность добавлять новые записи и изменять доход
+# Вывод кошелька пользователя и его трат(по поиску или по страницам), возможность добавлять новые записи и изменять доход
 @login_required
 def wallet_user(request):
     if request.method == "POST":
@@ -54,12 +54,14 @@ def wallet_user(request):
             Wallet.objects.filter(own=request.user.email).update(revenues=f["revenues"])
     else:
         form_modal = ChangeWalletForm()
-    record, len_rec, expenses = records_user(request)
+    record, count_rec, expenses = pagination_records(request)
+    if request.GET.get("q"):
+        record = search(request)
     data ={
         "owner": get_object_or_404(User, username=request.user.username),
         "title": "Кошелёк",
         "record": record,
-        "len": len_rec,
+        "count": count_rec,
         "expenses": expenses,
         "modal": form_modal,
     }

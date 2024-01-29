@@ -8,20 +8,55 @@ a {
 }
 
 :root{
-    --color1:#418393;
-    --color2:#164147;
-    --сolor3: #88B5A2;
+    --color1:#003D73;
+    --color11:#00549e;
+    --color2:#C05640;
+    --color22:#d55c44;
+    --сolor3: #0878A4;
+    --color4: #EDD170;
+    --color44: #f4df92;
+    --color5: #1ECFD6;
   }
-  
-header, footer, section{
+
+footer, section{
     padding: 100px 0;
   }
 
 header, footer{
-    background: linear-gradient(to right,  var(--color1) 0%, var(--color2) 100%);
+    background: #343a40;
 }
 
 /* Таблица */
+
+.pagination > li > a
+{
+    background-color: white;
+    color: black;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > .active > a
+{
+    color: black;
+    background-color: var(--color4) !Important;
+    border: solid 1px var(--color4) !Important;
+}
+
+.pagination > .active > a:hover
+{
+    color: black;
+    background-color: var(--color44) !Important;
+    border: solid 1px var(--color44);
+}
 
 td, th{
   text-align: center;
@@ -30,9 +65,10 @@ td, th{
 }
 .table-acc{
   --bs-table-color:white;
-  --bs-table-bg: var(--color2);
-  --bs-table-border-color:var(--color3);
-  --bs-table-striped-bg:var(--color1);--bs-table-striped-color: white;
+  --bs-table-bg: var(--color1);
+  --bs-table-border-color: var(--color3);
+  --bs-table-striped-bg: var(--color1);
+  --bs-table-striped-color: white;
   width: 100%;
   word-break: break-all;
 }
@@ -153,18 +189,9 @@ form {
   font-size: 50px;
   color: var(--color2)
 }
-.acc_circle{
-  margin: 0 auto 0;
-  width: 1000px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .line{
   width: 400px;
   height: 3px;
   background-color: var(--color1);
   margin: 15px auto 30px;
 }
-

@@ -1,1 +1,62 @@
 {% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+{% if owner.wallet %}
+<section class="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% if len != 0 %}
+                <h2 class="text-center color1 mb-5">Недавние траты</h2>
+                    <table class="table table-primary table-hover table_block">
+                        <thead class="table-warning">
+                            <tr>
+                                <th scope="col" style="text-align: center">Описание</th>
+                                <th scope="col" style="text-align: center">Категория</th>
+                                <th scope="col" style="text-align: center">Сумма</th>
+                                <th scope="col" style="text-align: center">Дата и время</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rec in record %}
+                            <tr>
+                                <td style="text-align: center">{{ rec.title }}</td>
+                                <td style="text-align: center">{{ rec.categories }}</td>
+                                <td style="text-align: center">{{ rec.amount }}</td>
+                                <td style="text-align: center">{{ rec.time_create }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td style="text-align: center"><a href="{% url "users:wallet" %}#table_id">...</a></td>
+                                <td style="text-align: center"><a href="{% url "users:wallet" %}#table_id">...</a></td>
+                                <td style="text-align: center"><a href="{% url "users:wallet" %}#table_id">...</a></td>
+                                <td style="text-align: center"><a href="{% url "users:wallet" %}#table_id">...</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <h1 class="text-center color1 text-uppercase">Пока записей нет</h1>
+                  {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center color1 mb-5">Создайте кошелёк</h1>
+                <p class="text-center"><a href="{% url "users:wallet" %}" class="btn btn-primary btn-lg">Мой кошелёк</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock content %}
+
+
+

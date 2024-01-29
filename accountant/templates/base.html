@@ -7,40 +7,69 @@
     <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "css/fontello.css" %}">
     <link rel="stylesheet" href="{% static "css/style.css" %}">
+    
     <script src="{% static 'bootstrap/js/bootstrap.min.js'%}"></script>
+    <script defer src="{% static 'js/jquery-3.7.0.min.js'%}"></script>
+    <script defer src="{% static 'js/script.js'%}"></script>
+
     <title> {{title}} </title>
 </head>
 <body>
     <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
-                    <div class="text-start to-bottom">
+        <nav class="navbar navbar-expand-sm bg-body-tertiary bg-dark border-bottom border-body" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url "home" %}">
+                    <img src="{% static "img/wallet.ico" %}" alt="Bootstrap" width="30" height="30">
+                </a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         {% for m in mainmenu %}
-                            <p><a href="{% url m.url_name %}" class="btn btn-ls btn-sm fixed-font-size">{{m.title}}</a></p>
-                        {% endfor %}
-                    </div>  
-                </div>
-                    <div class="col-4">
-                        <h1 class="text-center text-white">
-                            SELF ACCOUNTANT
-                        </h1>
-                    </div>
-                <div class="col-4">
-                    <div class="text-end to-bottom">
+                        <li class="nav-item">
+                            {% url m.url_name as url %}
+                            {% if request.path == url %}
+                                <a class="nav-link active" aria-current="page" href="{{url}}">{{m.title}}</a>
+                            {% else %}
+                                <a class="nav-link" aria-current="page" href="{{url}}">{{m.title}}</a>
+                            {% endif %}
+                        </li>
+                        {% endfor %}    
+                    </ul>
+                    <ul class="navbar-nav navbar-right">
                         {% if user.is_authenticated %}
-                            <p><a href="{%url "users:profile" %}" class="btn btn-rs btn-sm fixed-font-size">Профиль</a></p>
-                            <p><a href="{% url "users:logout" %}" class="btn btn-rs btn-sm fixed-font-size">Выйти</a></p>                      
+                            <li class="nav-item">
+                                {% url "users:profile" as url %}
+                                {% if request.path == url %}
+                                    <a href="{{url}}" class="nav-link active" aria-current="page">Профиль</a>
+                                {% else %}
+                                    <a href="{{url}}" class="nav-link" aria-current="page">Профиль</a>
+                                {% endif %}
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url "users:logout" %}" class="nav-link" aria-current="page">Выйти</a>                     
+                            </li>
                         {% else %}
-                            <p><a href="{% url "users:login" %}" class="btn btn-rs btn-sm fixed-font-size">Войти</a></p>
-                            <p><a href="{% url "users:register" %}" class="btn btn-rs btn-sm fixed-font-size">Регистрация</a></p>
-                        {% endif %}  
-                    </div>     
-                </div>    
+                            <li class="nav-item">
+                                {% url "users:login" as url %}
+                                {% if request.path == url %}
+                                    <a href="{{url}}" class="nav-link active" aria-current="page">Войти</a>
+                                {% else %}
+                                    <a href="{{url}}" class="nav-link" aria-current="page">Войти</a>
+                                {% endif %}
+                            </li>
+                            <li class="nav-item">
+                                {% url "users:register" as url %}
+                                {% if request.path == url %}
+                                    <a href="{{url}}" class="nav-link active" aria-current="page">Регистрация</a>
+                                {% else %}
+                                    <a href="{{url}}" class="nav-link" aria-current="page">Регистрация</a>
+                                {% endif %}
+                            </li>
+                        {% endif %} 
+                    </ul>
+                </div>
             </div>
-        </div>
+        </nav>
     </header>
-
     
 {% block content %} 
 
