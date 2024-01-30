@@ -26,6 +26,36 @@ header, footer{
     background: #343a40;
 }
 
+/* Текст внутри текста */
+
+.text-inside {
+  font-size: 25px;
+}
+.text-inside:hover {
+  font-size: 25px;
+  color: var(--color11);
+}
+
+/* Аккордеон */
+
+.accordion-p {
+  font-size: 16px;
+  color: #ffffff8c;
+}
+.accordion-p:hover {
+  color: white;
+  font-size: 16px;
+}
+.accordion-body{
+  background-color: #343a40;
+  border-radius: 5px;
+}
+
+.accordion-button:not(.collapsed) {
+  color: var(--bs-black);
+  background-color: var(--bs-white);
+}
+
 /* Таблица */
 
 .pagination > li > a

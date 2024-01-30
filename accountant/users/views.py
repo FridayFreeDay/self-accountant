@@ -6,7 +6,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView 
 from django.contrib.auth.views import LoginView
-from users.services import pagination_records, records_user, search
+from information.forms import FilterForm
+from users.services import pagination_records, records_user, search, search_expenses, search_record_and_expenses
 from information.models import Record
 from users.models import User, Wallet 
 from users.forms import AddWalletForm, ChangeWalletForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm
@@ -48,22 +49,27 @@ class ProfileUser(LoginRequiredMixin, UpdateView):
 @login_required
 def wallet_user(request):
     if request.method == "POST":
-        form_modal = ChangeWalletForm(request.POST)
-        if form_modal.is_valid():
-            f = form_modal.cleaned_data
+        change_form = ChangeWalletForm(request.POST)
+        if change_form.is_valid():
+            f = change_form.cleaned_data
             Wallet.objects.filter(own=request.user.email).update(revenues=f["revenues"])
     else:
-        form_modal = ChangeWalletForm()
-    record, count_rec, expenses = pagination_records(request)
-    if request.GET.get("q"):
-        record = search(request)
+        change_form = ChangeWalletForm()
+    search_expenses_list = 0
+    if request.GET.get("q") or request.GET.get("cats"):
+        record, search_expenses_list = search_record_and_expenses(request)
+    else:
+        record = pagination_records(request)
+
+    filter_form = FilterForm()
+
     data ={
-        "owner": get_object_or_404(User, username=request.user.username),
         "title": "Кошелёк",
         "record": record,
-        "count": count_rec,
-        "expenses": expenses,
-        "modal": form_modal,
+        "expenses": search_expenses(),
+        "search_expenses": search_expenses_list,
+        "change_form": change_form,
+        "filter_form": filter_form,
     }
     return render(request, "users/wallet.html", data)
 
