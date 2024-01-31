@@ -24,87 +24,27 @@
         
             <div class="col-3"> 
                 <p></p>
-                <div class="accordion accordion-lg" id="accordionExample">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            Фильтр
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <p class="accordion-p"><strong><a href="" data-bs-toggle="modal" data-bs-target="#sum">Сумма</a></p></strong>
-                                <p class="accordion-p"><strong><a href="" data-bs-toggle="modal" data-bs-target="#cat">Категория</a></p></strong>
-                                <p class="accordion-p"><strong><a href="" data-bs-toggle="modal" data-bs-target="#date">Дата</a></p></strong>
-                            </div>
+                <button type="button" class="btn btn-filter btn-sm" data-bs-toggle="modal" data-bs-target="#sum">
+                    Фильтр
+                </button> 
+            </div>
+            <div class="modal fade" id="sum" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Фильтр</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        
-        <div class="modal fade" id="sum" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Фильтр по сумме</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="" method="GET" class="text-center">
-                            <div class='form-error'>{{ filter_form.non_field_errors }}</div>
-                            {% for m in filter_form %}
-                                <p><label class="form-label" for="{{m.id_for_label}}">{{m.label}}</label>{{m}}</p>
-                                <div class="form-error">{{ m.errors }}</div>  
-                            {% endfor %} 
-                            <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
-                        </form>  
-                        <h5>Sum</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="cat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Фильтр по сумме1</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {% comment %} <form method="POST" class="text-center">
-                            {% csrf_token %} 
-                            <div class='form-error'>{{ modal.non_field_errors }}</div>
-                            {% for m in modal %}
-                                <p><label class="form-label" for="{{m.id_for_label}}">{{m.label}}</label>{{m}}</p>
-                                <div class="form-error">{{ m.errors }}</div>  
-                            {% endfor %}
-                            <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
-                        </form>  {% endcomment %}
-                        <h5>cat</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="date" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Фильтр по сумме2</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {% comment %} <form method="POST" class="text-center">
-                            {% csrf_token %} 
-                            <div class='form-error'>{{ modal.non_field_errors }}</div>
-                            {% for m in modal %}
-                                <p><label class="form-label" for="{{m.id_for_label}}">{{m.label}}</label>{{m}}</p>
-                                <div class="form-error">{{ m.errors }}</div>  
-                            {% endfor %}
-                            <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
-                        </form>  {% endcomment %}
-                        <h5>date</h5>
+                        <div class="modal-body">
+                            <form action="" method="GET" class="text-center">
+                                <div class='form-error'>{{ filter_form.non_field_errors }}</div>
+                                {% for m in filter_form %}
+                                    <p><label class="form-label" for="{{m.id_for_label}}">{{m.label}}</label>{{m}}</p>
+                                    <div class="form-error">{{ m.errors }}</div>  
+                                {% endfor %}  
+                                <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
+                            </form>  
+                        </div>
                     </div>
                 </div>
             </div>
@@ -112,7 +52,7 @@
 
         <div class="row text-center">
             <div class="col-12">
-                <h5 class="text-center color1 mb-5">Расходы по результатам поиска: {{search_expenses}} руб.</h5>
+                <h5 class="text-center color1 mb-5 mt-5">Расходы по результатам поиска: {{search_expenses}} руб.</h5>
             </div>
         </div>
         <div class="row text-center">

@@ -6,9 +6,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView 
 from django.contrib.auth.views import LoginView
-from information.forms import FilterForm
+from users.forms import FilterForm
 from users.services import pagination_records, records_user, search, search_expenses, search_record_and_expenses
-from information.models import Record
 from users.models import User, Wallet 
 from users.forms import AddWalletForm, ChangeWalletForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -60,16 +59,13 @@ def wallet_user(request):
         record, search_expenses_list = search_record_and_expenses(request)
     else:
         record = pagination_records(request)
-
-    filter_form = FilterForm()
-
     data ={
         "title": "Кошелёк",
         "record": record,
         "expenses": search_expenses(),
         "search_expenses": search_expenses_list,
         "change_form": change_form,
-        "filter_form": filter_form,
+        "filter_form": FilterForm(),
     }
     return render(request, "users/wallet.html", data)
 

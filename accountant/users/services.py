@@ -1,4 +1,6 @@
+from datetime import datetime
 from django.core.paginator import Paginator
+from users.forms import FilterForm
 from information.models import Record
 from django.db.models import Q
 
@@ -34,10 +36,15 @@ def search(request):
 # Функция поиска записей/трат пользователя и суммы трат по GET запросу по переменной cats, производится по фильтрации 
 # Возвращает искомые записи, сумму трат
 def search_filter(request):
-    query = request.GET.get('cats')
-    cats_list = Record.objects.filter(Q(categories__id=query)).select_related("categories", "buyer")
-    expenses = search_expenses(cats_list)
-    return cats_list, expenses
+    filter_form = FilterForm(request.GET)
+    if filter_form.is_valid():
+            cats = filter_form.cleaned_data.get("cats")
+    start_date = datetime.strptime(f"{request.GET.get('start_date_year')}-{request.GET.get('start_date_month')}-{request.GET.get('start_date_day')}", '%Y-%m-%d')
+    end_date = datetime.strptime(f"{request.GET.get('end_date_year')}-{request.GET.get('end_date_month')}-{request.GET.get('end_date_day')}", '%Y-%m-%d')
+
+    filter_list = Record.objects.filter(Q(categories__id__in=cats),Q(time_create__date__gte=start_date) & Q(time_create__date__lte=end_date)).select_related("categories", "buyer")
+    expenses = search_expenses(filter_list)
+    return filter_list, expenses
 
 
 # Функция возвращает сумму расходов по записям

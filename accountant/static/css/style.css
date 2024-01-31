@@ -16,6 +16,8 @@ a {
     --color4: #EDD170;
     --color44: #f4df92;
     --color5: #1ECFD6;
+    --back: #343a40;
+    --backhv: #434b53;
   }
 
 footer, section{
@@ -23,7 +25,7 @@ footer, section{
   }
 
 header, footer{
-    background: #343a40;
+    background: var(--back);
 }
 
 /* Текст внутри текста */
@@ -47,7 +49,7 @@ header, footer{
   font-size: 16px;
 }
 .accordion-body{
-  background-color: #343a40;
+  background-color: var(--back);
   border-radius: 5px;
 }
 
@@ -142,8 +144,31 @@ form {
 .fixed-font-size{
   font-size: 16px;
 }
+/* Кнопка фильтрации */
+
+.btn-filter {
+  min-width: 200px;
+  max-width: 200px;
+  color: var(--bs-white);
+  background-color: var(--back);
+  margin: 0 auto;
+  padding: 8px 30px;
+  font-size: 16px;
+  border-radius: 0.375em;
+}
+.btn-filter:hover {
+  min-width: 200px;
+  max-width: 200px;
+  color: var(--bs-white);
+  background-color: var(--backhv);
+  margin: 0 auto;
+  padding: 8px 30px;
+  font-size: 16px;
+  border-radius: 0.375em;
+}
 
 /* Кнопка авторизации */
+
 .btn-login{
   min-width: 100px;
   max-width: 200px;
@@ -152,6 +177,7 @@ form {
   margin: 0 auto;
   padding: 8px 30px;
   font-size: 16px;
+  border-radius: 0.375em;
 }
 .btn-login:hover{
   min-width: 100px;
@@ -160,6 +186,7 @@ form {
   background-color: var(--color1);
   margin: 0 auto;
   padding: 8px 30px;
+  border-radius: 0.375em;
 }
 
 /* Главное меню */

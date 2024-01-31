@@ -1,6 +1,6 @@
 from django import forms
 
-from information.models import Category, Record
+from information.models import Record
 
 
 # Форма создания записи о тратах
@@ -13,9 +13,3 @@ class RecordForm(forms.ModelForm):
             "amount": forms.TextInput(attrs={"class": "form-class-active"}),
             "categories": forms.Select(attrs={"class": "form-class-active"}),
         }
-
-# Форма фильтрации записей/трат
-class FilterForm(forms.Form):
-    date = forms.CharField(widget=forms.SelectDateWidget(), label="Дата", required=False)
-    cats = forms.ModelChoiceField(queryset=Category.objects.all(), label="Категория")
-    summ = forms.DecimalField(label="Сумма", required=False)
