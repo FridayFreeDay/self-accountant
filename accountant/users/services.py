@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from django.core.paginator import Paginator
 from users.forms import FilterForm
 from information.models import Record
@@ -38,11 +38,9 @@ def search(request):
 def search_filter(request):
     filter_form = FilterForm(request.GET)
     if filter_form.is_valid():
-            cats = filter_form.cleaned_data.get("cats")
-    start_date = datetime.strptime(f"{request.GET.get('start_date_year')}-{request.GET.get('start_date_month')}-{request.GET.get('start_date_day')}", '%Y-%m-%d')
-    end_date = datetime.strptime(f"{request.GET.get('end_date_year')}-{request.GET.get('end_date_month')}-{request.GET.get('end_date_day')}", '%Y-%m-%d')
-
-    filter_list = Record.objects.filter(Q(categories__id__in=cats),Q(time_create__date__gte=start_date) & Q(time_create__date__lte=end_date)).select_related("categories", "buyer")
+            f = filter_form.cleaned_data
+    filter_list = Record.objects.filter(Q(categories__id__in=f["cats"]),
+                                        Q(amount__gte=f["start_sum"]) & Q(amount__lte=f["end_sum"]), Q(time_create__date__gte=f["start_date"]) & Q(time_create__date__lte=f["end_date"])).select_related("categories", "buyer")
     expenses = search_expenses(filter_list)
     return filter_list, expenses
 

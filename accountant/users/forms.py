@@ -4,7 +4,7 @@ from django.contrib.auth import get_user, get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
-from information.models import Category, Record
+from information.models import Category
 
 from users.models import Wallet
 
@@ -117,9 +117,9 @@ class ChangeWalletForm(forms.ModelForm):
 class FilterForm(forms.Form):
     this_year = datetime.date.today().year
     years=tuple(range(this_year - 3, this_year+1))
-    start_date = forms.DateField(widget=forms.SelectDateWidget(years=years), label="Дата | От", required=False)
-    end_date =  forms.DateField(widget=forms.SelectDateWidget(years=years), label="Дата | До", required=False)
-    
+    start_date = forms.DateField(widget=forms.SelectDateWidget(years=years), label="Дата | От")
+    end_date =  forms.DateField(widget=forms.SelectDateWidget(years=years), label="Дата | До", initial=datetime.date.today())
     cats = forms.MultipleChoiceField(choices=tuple(enumerate(Category.objects.values_list("name", flat=True),1)),
-                                      widget=forms.CheckboxSelectMultiple(), label="Категория")
-    summ = forms.DecimalField(label="Сумма", required=False)
+                                      widget=forms.CheckboxSelectMultiple(), label="Категория", initial=1)
+    start_sum = forms.DecimalField(label="Сумма | от", initial=0)
+    end_sum = forms.DecimalField(label="Сумма | до", initial=999999999999)

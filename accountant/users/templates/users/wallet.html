@@ -24,11 +24,16 @@
         
             <div class="col-3"> 
                 <p></p>
-                <button type="button" class="btn btn-filter btn-sm" data-bs-toggle="modal" data-bs-target="#sum">
+                <button type="button" class="btn btn-filter btn-sm" data-bs-toggle="modal" data-bs-target="#filter">
                     Фильтр
-                </button> 
+                </button>
+                <p></p>
+                <a href="{% url "users:wallet" %}"><button type="button" class="btn btn-secondary btn-sm">
+                    Сбросить фильтр
+                </button></a>
             </div>
-            <div class="modal fade" id="sum" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+            <div class="modal fade" id="filter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
