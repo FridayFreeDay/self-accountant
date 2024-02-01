@@ -2,14 +2,15 @@ from typing import Any
 from django.contrib.auth import get_user_model
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView 
 from django.contrib.auth.views import LoginView
-from users.forms import FilterForm
+from information.models import Record
 from users.services import pagination_records, records_user, search, search_expenses, search_record_and_expenses
 from users.models import User, Wallet 
-from users.forms import AddWalletForm, ChangeWalletForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm
+from users.forms import AddWalletForm, ChangeWalletForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm, FilterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
@@ -88,3 +89,10 @@ def wallet_create(request):
         "title": "Создание кошелька",
     }
     return render(request, "users/create_wallet.html", data)
+
+# Функция удаления записей/трат
+def delete_record(request):
+    del_list = request.POST.getlist("delete")
+    if del_list:
+        Record.objects.filter(id__in=del_list).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

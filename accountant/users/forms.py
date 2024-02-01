@@ -4,7 +4,7 @@ from django.contrib.auth import get_user, get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
-from information.models import Category
+from information.models import Category, Record
 
 from users.models import Wallet
 

@@ -13,4 +13,5 @@ urlpatterns = [
     path("profile/", views.ProfileUser.as_view(), name="profile"),
     path("wallet/", views.wallet_user, name="wallet"),
     path("create-wallet/", views.wallet_create, name="create_wallet"),
+    path("delete-record/", views.delete_record, name="delete_record"),
 ]

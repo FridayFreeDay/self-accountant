@@ -6,14 +6,13 @@ from django.db.models import Q
 
 
 # Вывод определённого количества или всех записей/трат пользователя
-def records_user(request, count=Record.objects.all().count()):
-    rec = Record.objects.filter(buyer=request.user).select_related("categories", "buyer")[:count]
-    # expenses = search_expenses(rec)
+def records_user(request):
+    rec = Record.objects.filter(buyer=request.user).select_related("categories", "buyer")
     return rec
 
 
 # Функция отображения записей/трат пользователя в виде таблицы постранично, номер страницы передаётся в GET запросе в переменной page
-# Возвращает страницу с записями, количество всех записей, суммы трат по всем записям
+# Возвращает страницу с записями
 def pagination_records(request):
     context_list = records_user(request)
     paginator = Paginator(context_list, 10)
@@ -24,7 +23,7 @@ def pagination_records(request):
 
 
 # Функция поиска записей/трат пользователя и суммы трат по GET запросу по переменной q, производится по сумме/описанию/категории 
-# Возвращает искомые записи, сумму трат
+# Возвращает искомые записи, сумму трат по ним
 def search(request):
     query = request.GET.get('q')
     search_list = Record.objects.filter(Q(amount__icontains=query)|
@@ -33,8 +32,8 @@ def search(request):
     return search_list, expenses
 
 
-# Функция поиска записей/трат пользователя и суммы трат по GET запросу по переменной cats, производится по фильтрации 
-# Возвращает искомые записи, сумму трат
+# Функция фильтрации записей/трат пользователя и суммы трат по GET запросу по переменной cats, производится по фильтрации 
+# Возвращает искомые записи, сумму трат по ним
 def search_filter(request):
     filter_form = FilterForm(request.GET)
     if filter_form.is_valid():
@@ -53,8 +52,8 @@ def search_expenses(search_list=Record.objects.all()):
     return expenses
 
 
-# Функция поиска записей/трат пользователя и суммы трат по GET запросу, производится по фильтрации и поиску
-# Возвращает искомые записи, сумму трат
+# Функция поиска записей/трат пользователя и суммы трат по GET запросу, производится по фильтрации и поиску(распределительная функция)
+# Возвращает искомые записи, сумму трат по ним
 def search_record_and_expenses(request):
     if request.GET.get("q"):
         record, search_expenses_list = search(request)
