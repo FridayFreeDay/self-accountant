@@ -23,10 +23,9 @@
                         <tbody>
                             {% for rec in record %}
                             <tr>
-                                <td style="text-align: center">{{ rec.title }}</td>
-                                <td style="text-align: center">{{ rec.categories }}</td>
-                                <td style="text-align: center">{{ rec.amount }}</td>
-                                <td style="text-align: center">{{ rec.time_create }}</td>
+                                {% for r in rec|slice:":4" %}
+                                    <td style="text-align: center">{{ r }}</td>
+                                {% endfor %}
                             </tr>
                             {% endfor %}
                             <tr>

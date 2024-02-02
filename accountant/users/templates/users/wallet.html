@@ -18,7 +18,7 @@
                 <p id ="table_id"></p>
                 <form class="d-flex" role="search" method="GET">
                     <input class="form-control me-2" type="text" placeholder="Поиск: описание/категория/сумма" aria-label="Поиск" name="q">
-                    <a href="{% url "users:wallet" %}"><button class="btn btn-login" type="submit">Поиск</button></a>
+                    <a href="{% url "users:wallet" %}?"><button class="btn btn-login" type="submit">Поиск</button></a>
                 </form>
             </div>
         
@@ -28,7 +28,7 @@
                     Фильтр
                 </button>
                 <p></p>
-                <a href="{% url "users:wallet" %}"><button type="button" class="btn btn-secondary btn-sm">
+                <a href="{% url "users:wallet" %}?"><button type="button" class="btn btn-secondary btn-sm">
                     Сбросить фильтр
                 </button></a>
             </div>
@@ -57,7 +57,7 @@
 
         <div class="row text-center">
             <div class="col-12">
-                <h5 class="text-center color1 mb-5 mt-5">Расходы по результатам поиска: {{search_expenses}} руб.</h5>
+                <h5 class="text-center color1 mb-5">Расходы по результатам поиска: {{search_expenses}} руб.</h5>
             </div>
         </div>
         <div class="row text-center">
@@ -81,13 +81,12 @@
                         {% csrf_token %}
                         {% for rec in record %}
                         <tr>
-                            <td style="text-align: center">{{ rec.title }}</td>
-                            <td style="text-align: center">{{ rec.categories }}</td>
-                            <td style="text-align: center">{{ rec.amount }}</td>
-                            <td style="text-align: center">{{ rec.time_create }}</td>
+                            {% for r in rec|slice:":4" %}
+                            <td style="text-align: center">{{ r }}</td>
+                            {% endfor %}
                             <td style="text-align: center">
                                 <label>
-                                    <input type="checkbox" name="delete" value="{{rec.id}}">
+                                    <input type="checkbox" name="delete" value="{{rec|last}}">
                                 </label>
                             </td>
                         </tr>
@@ -100,7 +99,7 @@
                     <ul class="pagination justify-content-center ul-pag">
                         {% if record.has_previous %}
                             <li class="page-item">
-                            <a class="page-link" href="?page={{record.previous_page_number}}#table_id">Предыдущая</a>
+                            <a class="page-link" href="{{request.path}}?{{query_string}}&page={{record.previous_page_number}}#table_id">Предыдущая</a>
                         {% else %}
                             <li class="page-item disabled">
                             <a class="page-link">Предыдущая</a>
@@ -108,14 +107,14 @@
                             </li>
                         {% for page in record.paginator.page_range %}
                             {% if record.number == page %}
-                                <li class="page-item active"><a class="page-link" href="?page={{page}}#table_id">{{ page }}</a></li>
+                                <li class="page-item active"><a class="page-link" href="{{request.path}}?{{query_string}}&page={{page}}#table_id">{{ page }}</a></li>
                             {% else %}
-                                <li class="page-item"><a class="page-link" href="?page={{page}}#table_id">{{ page }}</a></li>
+                                <li class="page-item"><a class="page-link" href="{{request.path}}?{{query_string}}&page={{page}}#table_id">{{ page }}</a></li>
                             {% endif %}
                         {% endfor %}
                         {% if record.has_next %}
                             <li class="page-item">
-                            <a class="page-link" href="?page={{record.next_page_number}}#table_id">Следующая</a>
+                            <a class="page-link" href="{{request.path}}?{{query_string}}&page={{record.next_page_number}}#table_id">Следующая</a>
                         {% else %}
                             <li class="page-item disabled">
                             <a class="page-link">Следующая</a>
@@ -185,7 +184,8 @@
             </div>
         {% else %}
             <p class="text-center"><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
-        {% endif %}        
+        {% endif %}  
+        {{ chart|safe }}
     </div>
 </section>
 

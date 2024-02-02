@@ -16,7 +16,7 @@ def page_not_found(request, exception):
 # Функция для работы с главной страницей сайта, отображает недавние записи/траты
 def index(request):
     if request.user.is_authenticated:
-        record = records_user(request)[:5]
+        record = records_user(request)[0][:5]
         data = {
             "title": "Главная страница",
             "record": record,

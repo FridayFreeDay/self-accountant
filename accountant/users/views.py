@@ -8,11 +8,12 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView 
 from django.contrib.auth.views import LoginView
 from information.models import Record
-from users.services import pagination_records, records_user, search, search_expenses, search_record_and_expenses
+from users.services import chart, pagination_records, records_user, search, search_expenses, search_record_and_expenses
 from users.models import User, Wallet 
 from users.forms import AddWalletForm, ChangeWalletForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm, FilterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+
 
 
 # Регистрация пользователя
@@ -57,9 +58,9 @@ def wallet_user(request):
         change_form = ChangeWalletForm()
     search_expenses_list = 0
     if request.GET.get("q") or request.GET.get("cats"):
-        record, search_expenses_list = search_record_and_expenses(request)
+        record, search_expenses_list, chart = search_record_and_expenses(request)
     else:
-        record = pagination_records(request)
+        record, chart = records_user(request)
     data ={
         "title": "Кошелёк",
         "record": record,
@@ -67,6 +68,8 @@ def wallet_user(request):
         "search_expenses": search_expenses_list,
         "change_form": change_form,
         "filter_form": FilterForm(),
+        "chart": chart,
+        "query_string": request.META['QUERY_STRING'],
     }
     return render(request, "users/wallet.html", data)
 
