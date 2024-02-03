@@ -139,7 +139,7 @@
     <div class="container">
         {% if user.wallet %}
             <div class="row text-center">
-                <div class="col-12">
+                <div class="col-6" style="margin-top: 150px">
                     {% if user.wallet.revenues %}
                         <h5 class="text-center color1 mb-5">Доход: {{user.wallet.revenues}} руб.</h5>
                     {% else %}
@@ -175,17 +175,25 @@
                             </div>
                         </div>
                     </div>
+
+                    <div  style="margin-bottom: 100px">
+                        <h5 class="text-center color1 mt-3">Общие расходы: {{expenses}} руб.</h5>
+                    </div>
+                </div>
+                <div class="col-6">
+
+                    {{ chart|safe }}
+
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12" style="margin-bottom: 100px">
-                        <h5 class="text-center color1 mt-3">Общие расходы: {{expenses}} руб.</h5>
+            <div class="row text-center mt-5">
+                <div class="col-12">
+                    {{ chart1|safe }}
                 </div>
             </div>
         {% else %}
             <p class="text-center"><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
         {% endif %}  
-        {{ chart|safe }}
     </div>
 </section>
 

@@ -247,7 +247,7 @@ form {
   color: var(--color2)
 }
 .line{
-  width: 400px;
+  width: 300px;
   height: 3px;
   background-color: var(--color1);
   margin: 15px auto 30px;

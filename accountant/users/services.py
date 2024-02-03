@@ -3,7 +3,9 @@ from django.core.paginator import Paginator
 from users.forms import FilterForm
 from information.models import Record
 from django.db.models import Q
+import plotly.graph_objects as go
 import plotly.express as px
+
 
 
 values_list = ("title", "categories__name", "amount", "time_create", "id")
@@ -57,8 +59,8 @@ def search_filter(request):
 # Функция возвращает сумму расходов по записям
 def search_expenses(search_list=Record.objects.all().values_list(*values_list)):
     expenses = 0
-    for r in search_list:
-        expenses += r[2]
+    for e in search_list:
+        expenses += e[2]
     return expenses
 
 
@@ -75,19 +77,64 @@ def search_record_and_expenses(request):
 # Функция вывода графиков
 def chart(record):
     
-    fig = px.pie(
-        names = [r[1] for r in record],
-        values = [r[2] for r in record],
-        title = "Расходы по категориям",
-        # labels={"x": "Дата", "y": "Сумма"},
-    )
+    labels = [r[1] for r in record]
+    values = [r[2] for r in record]
+    
 
-    # fig1.update_layout(title={
-    #     "font_size": 22,
-    #     "xanchor": "center",
-    #     "x": 0.5,
-    # })
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
+    fig.update_layout(
+        hovermode='closest',
+        legend= dict(
+            font=dict(
+            size=16
+            ),
+            orientation="h",
+            yanchor="bottom",
+            y=-0.3,
+            xanchor="right",
+            x=0.9
+        ),
+        width=500,
+        height=500,
+        paper_bgcolor="rgba(0,0,0,0)",
+        title={
+            "text": "Расходы по категориям",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top',
+            'font': {'size': 20, 'family': 'system-ui', 'color': '#003D73'},
+        })
+    colors = ['#6CF1C6', '#76B2F0', '#FFC773', '#FFA273']
 
-    chart = fig.to_html()
+    fig.update_traces(textfont_size=16, marker= dict(colors=colors, line= dict(color='#000000', width=1)))
+    chart = fig.to_html(full_html=False)
 
-    return chart
+    fig1 = px.histogram(x=[str(r[3])[:10] for r in record], y=values)
+    fig1.update_layout(
+        xaxis=dict(title='Дата', title_font=dict(size=16), gridwidth=1),  # Название и размер шрифта для оси X
+        yaxis=dict(title='Сумма', title_font=dict(size=16), gridwidth=1, range=[0, 170000]), 
+        bargap=0.4,
+        hovermode='closest',
+        legend= dict(
+            font=dict(
+            size=16
+            ),
+            orientation="h",
+            yanchor="bottom",
+            y=-0.3,
+            xanchor="right",
+            x=0.9
+        ),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        title={
+            "text": "Расходы по дате",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top',
+            'font': {'size': 20, 'family': 'system-ui', 'color': '#003D73'},
+        })
+    fig1.update_traces(textfont_size=16)
+
+    chart1 = fig1.to_html(full_html=False)
+    return chart, chart1

@@ -68,7 +68,8 @@ def wallet_user(request):
         "search_expenses": search_expenses_list,
         "change_form": change_form,
         "filter_form": FilterForm(),
-        "chart": chart,
+        "chart": chart[0],
+        "chart1": chart[1],
         "query_string": request.META['QUERY_STRING'],
     }
     return render(request, "users/wallet.html", data)
