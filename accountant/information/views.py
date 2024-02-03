@@ -2,7 +2,7 @@ from django.http import HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from users.models import User
-from users.services import records_user, search_expenses
+from users.services import pagination_records, records_user, search_expenses
 from information.models import Record
 from django.contrib.auth.decorators import login_required
 
@@ -13,19 +13,11 @@ from information.forms import RecordForm
 def page_not_found(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")
 
-# Функция для работы с главной страницей сайта, отображает недавние записи/траты
+# Функция для работы с главной страницей сайта
 def index(request):
-    if request.user.is_authenticated:
-        record = records_user(request)[0][:5]
-        data = {
-            "title": "Главная страница",
-            "record": record,
-            "expenses": search_expenses(),
-        }
-    else:
-        data = {
-            "title": "Главная страница",
-        }
+    data = {
+        "title": "Главная страница",
+    }
     return render(request, "information/index.html", context=data)
 
 # Функция добавления записи о трате
