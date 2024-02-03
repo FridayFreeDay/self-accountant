@@ -126,7 +126,7 @@ def chart(record):
             'yanchor': 'top',
             'font': {'size': 20, 'family': 'system-ui', 'color': '#003D73'},
         })
-    fig1.update_traces(textfont_size=16)
+    fig1.update_traces(hovertemplate='Сумма: %{y}')
 
     chart1 = fig1.to_html(full_html=False)
     
