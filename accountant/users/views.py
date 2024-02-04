@@ -58,9 +58,9 @@ def wallet_user(request):
         change_form = ChangeWalletForm()
     search_expenses_list = 0
     if request.GET.get("q") or request.GET.get("cats"):
-        record, search_expenses_list, chart = search_record_and_expenses(request)
+        record, search_expenses_list = search_record_and_expenses(request)
     else:
-        record, chart = records_user(request)
+        record = records_user(request)
     data ={
         "title": "Кошелёк",
         "record": record,
@@ -68,8 +68,6 @@ def wallet_user(request):
         "search_expenses": search_expenses_list,
         "change_form": change_form,
         "filter_form": FilterForm(),
-        "chart": chart[0],
-        "chart1": chart[1],
         "query_string": request.META['QUERY_STRING'],
     }
     return render(request, "users/wallet.html", data)
@@ -100,3 +98,14 @@ def delete_record(request):
     if del_list:
         Record.objects.filter(id__in=del_list).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+# Функция отображения графиков на отдельной странице
+def show_stat(request):
+    ch = chart(request)
+    data = {
+        "title": "Статистика",
+        "chart": ch[0],
+        "chart1": ch[1],
+    }
+    return render(request, "users/stat.html", data)

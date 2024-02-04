@@ -2,6 +2,7 @@
 menu = [
     {'title': "Главная страница", "url_name": "home"},
     {'title': "Мой кошелёк", "url_name": "users:wallet"},
+    {'title': "Статистика", "url_name": "users:stat"},
     # {'title': "Настройки", "url_name": "configuration"},
     # {'title': "Помощь", "url_name": "help"},   
 ] 

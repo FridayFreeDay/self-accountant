@@ -9,12 +9,11 @@ import plotly.express as px
 
 values_list = ("title", "categories__name", "amount", "time_create", "id")
 
-# Вывод определённого всех записей/трат пользователя, графиков по ним 
+# Вывод определённого всех записей/трат пользователя
 def records_user(request):
     rec = Record.objects.filter(buyer=request.user).values_list(*values_list)
     page_obj = pagination_records(request, rec)
-    ch = chart(rec)
-    return page_obj, ch
+    return page_obj
 
 
 # Функция отображения записей/трат пользователя в виде таблицы постранично, номер страницы передаётся в GET запросе в переменной page
@@ -28,20 +27,19 @@ def pagination_records(request, context_list):
     return page_obj
 
 
-# Функция поиска записей/трат пользователя, суммы трат, графиков по GET запросу по переменной q, производится по сумме/описанию/категории 
-# Возвращает искомые записи, сумму трат по ним, графиков по ним
+# Функция поиска записей/трат пользователя, суммы трат по GET запросу по переменной q, производится по сумме/описанию/категории 
+# Возвращает искомые записи, сумму трат по ним
 def search(request):
     query = request.GET.get('q')
     search_list = Record.objects.filter(Q(amount__icontains=query)|
                                         Q(title__icontains=query)|Q(categories__name__icontains=query)).values_list(*values_list)
     expenses = search_expenses(search_list)
     page_obj = pagination_records(request, search_list)
-    ch = chart(search_list)
-    return page_obj, expenses, ch
+    return page_obj, expenses
 
 
-# Функция фильтрации записей/трат пользователя, суммы трат, графиков по GET запросу по переменной cats, производится по фильтрации 
-# Возвращает искомые записи, сумму трат по ним, графиков по ним
+# Функция фильтрации записей/трат пользователя, суммы трат по GET запросу по переменной cats, производится по фильтрации 
+# Возвращает искомые записи, сумму трат по ним
 def search_filter(request):
     filter_form = FilterForm(request.GET)
     if filter_form.is_valid():
@@ -51,8 +49,7 @@ def search_filter(request):
                                         Q(time_create__date__gte=f["start_date"]) & Q(time_create__date__lte=f["end_date"])).values_list(*values_list)
     expenses = search_expenses(filter_list)
     page_obj = pagination_records(request, filter_list)
-    ch = chart(filter_list)
-    return page_obj, expenses, ch
+    return page_obj, expenses
 
 
 # Функция возвращает сумму расходов по записям
@@ -63,18 +60,19 @@ def search_expenses(search_list=Record.objects.all().values_list(*values_list)):
     return expenses
 
 
-# Функция поиска записей/трат пользователя, суммы трат, графиков по GET запросу, производится по фильтрации и поиску(распределительная функция)
-# Возвращает искомые записи, сумму трат по ним, графики по ним
+# Функция поиска записей/трат пользователя, суммы трат по GET запросу, производится по фильтрации и поиску(распределительная функция)
+# Возвращает искомые записи, сумму трат по ним
 def search_record_and_expenses(request):
     if request.GET.get("q"):
-        record, search_expenses_list, ch = search(request)
+        record, search_expenses_list = search(request)
     elif request.GET.get("cats"):
-        record, search_expenses_list, ch = search_filter(request)
-    return record, search_expenses_list, ch
+        record, search_expenses_list = search_filter(request)
+    return record, search_expenses_list
 
 
 # Функция вывода графиков
-def chart(record):
+def chart(request):
+    record = Record.objects.filter(buyer=request.user).values_list(*values_list)
     labels = [r[1] for r in record]
     values = [r[2] for r in record]
 
