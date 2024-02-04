@@ -8,16 +8,11 @@ a {
 }
 
 :root{
-    --color1:#003D73;
-    --color11:#00549e;
-    --color2:#C05640;
-    --color22:#d55c44;
-    --сolor3: #0878A4;
-    --color4: #EDD170;
-    --color44: #f4df92;
-    --color5: #1ECFD6;
-    --back: #343a40;
-    --backhv: #434b53;
+    --dark_pr:#2e5d8b;
+    --pr:#336699;
+    --accent:#778D45;
+    --dark_accent:#344C11;
+    --back: #111f28;
   }
 
 footer, section{
@@ -25,7 +20,7 @@ footer, section{
   }
 
 header, footer{
-    background: var(--back);
+    background: #212529;
 }
 
 /* Текст внутри текста */
@@ -35,42 +30,20 @@ header, footer{
 }
 .text-inside:hover {
   font-size: 25px;
-  color: var(--color11);
-}
-
-/* Аккордеон */
-
-.accordion-p {
-  font-size: 16px;
-  color: #ffffff8c;
-}
-.accordion-p:hover {
-  color: white;
-  font-size: 16px;
-}
-.accordion-body{
-  background-color: var(--back);
-  border-radius: 5px;
-}
-
-.accordion-button:not(.collapsed) {
-  color: var(--bs-black);
-  background-color: var(--bs-white);
+  color: var(--light_pr);
 }
 
 /* Таблица */
 
-.pagination > li > a
-{
-    background-color: white;
-    color: black;
+.pagination > li > a {
+    background-color: var(--pr);
+    color: white;
 }
 
 .pagination > li > a:focus,
 .pagination > li > a:hover,
 .pagination > li > span:focus,
-.pagination > li > span:hover
-{
+.pagination > li > span:hover {
     color: #5a5a5a;
     background-color: #eee;
     border-color: #ddd;
@@ -78,16 +51,16 @@ header, footer{
 
 .pagination > .active > a
 {
-    color: black;
-    background-color: var(--color4) !Important;
-    border: solid 1px var(--color4) !Important;
+    color: white;
+    background-color: var(--accent) !Important;
+    border: solid 1px var(--back) !Important;
 }
 
 .pagination > .active > a:hover
 {
-    color: black;
-    background-color: var(--color44) !Important;
-    border: solid 1px var(--color44);
+    color: white;
+    background-color: var(--accent) !Important;
+    border: solid 1px var(--back);
 }
 
 td, th{
@@ -95,15 +68,7 @@ td, th{
   width: 500px;
   height: 50px;
 }
-.table-acc{
-  --bs-table-color:white;
-  --bs-table-bg: var(--color1);
-  --bs-table-border-color: var(--color3);
-  --bs-table-striped-bg: var(--color1);
-  --bs-table-striped-color: white;
-  width: 100%;
-  word-break: break-all;
-}
+
 
 /* Форма */
 
@@ -118,7 +83,7 @@ form {
   border-radius: 4px;
  }
 .form-class-active:hover {
-  background-color: var(--color1); 
+  background-color: var(--dark_pr); 
   color: white; 
   border-width: 2px;
   border-color: black;
@@ -150,7 +115,7 @@ form {
   min-width: 200px;
   max-width: 200px;
   color: var(--bs-white);
-  background-color: var(--back);
+  background-color: var(--backhv);
   margin: 0 auto;
   padding: 8px 30px;
   font-size: 16px;
@@ -173,7 +138,7 @@ form {
   min-width: 100px;
   max-width: 200px;
   color: var(--bs-white);
-  background-color: var(--color2);
+  background-color: var(--accent);
   margin: 0 auto;
   padding: 8px 30px;
   font-size: 16px;
@@ -183,7 +148,7 @@ form {
   min-width: 100px;
   max-width: 200px;
   color: var(--bs-white);
-  background-color: var(--color1);
+  background-color: var(--dark_accent);
   margin: 0 auto;
   padding: 8px 30px;
   border-radius: 0.375em;
@@ -194,7 +159,7 @@ form {
   min-width: 200px;
   max-width: 200px;
   color: var(--bs-white);
-  background-color: var(--color2);
+  background-color: var(--accent);
   margin: 0 auto;
   padding: 8px 30px;
 }
@@ -202,7 +167,7 @@ form {
   min-width: 200px;
   max-width: 200px;
   color: var(--bs-white);
-  background-color: var(--color1);
+  background-color: var(--dark_accent);
   margin: 0 auto;
   padding: 8px 30px;
 }
@@ -210,7 +175,7 @@ form {
   min-width: 200px;
   max-width: 200px;
   color: var(--bs-white);
-  background-color: var(--color1);
+  background-color: var(--dark_pr);
   margin: 0 auto;
   padding: 8px 30px;
   
@@ -219,28 +184,28 @@ form {
   min-width: 200px;
   max-width: 200px;
   color: var(--bs-white);
-  background-color: var(--color2);
+  background-color: var(--accent);
   margin: 0 auto;
   padding: 8px 30px;
 }
 
 /* Цвет */
-.color1{
-  color: var(--color1);
+.color-white{
+  color: white;
 }
 .color2{
-  color: var(--color2);
+  color: var(--accent);
 }
 .bgcolor1{
-  background-color: var(--color1);
+  background-color: var(--dark_accent);
 }
 .bgcolor2{
-  background-color: var(--color2);
+  background-color: var(--accent);
 }
 
 /* Секции */
 .about{
-  background-color: #dedede;
+  background-color: var(--back);
 }
 .about i{
   font-size: 50px;
@@ -249,6 +214,23 @@ form {
 .line{
   width: 300px;
   height: 3px;
-  background-color: var(--color1);
+  background-color: white;
   margin: 15px auto 30px;
+}
+
+/* Footer */
+
+footer .line{
+  width: 800px;
+  height: 1px;
+  background-color: white;
+  margin: 15px auto 30px;
+}
+
+.a-footer{
+  color: white;
+  margin: 0 30px;
+}
+.a-footer:hover {
+  color: rgb(190, 190, 190);
 }

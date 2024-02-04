@@ -24,7 +24,7 @@
         
             <div class="col-3"> 
                 <p></p>
-                <button type="button" class="btn btn-filter btn-sm" data-bs-toggle="modal" data-bs-target="#filter">
+                <button type="button" class="btn btn-login" data-bs-toggle="modal" data-bs-target="#filter">
                     Фильтр
                 </button>
                 <p></p>
@@ -57,13 +57,13 @@
 
         <div class="row text-center">
             <div class="col-12">
-                <h5 class="text-center color1 mb-5">Расходы по результатам поиска: {{search_expenses}} руб.</h5>
+                <h5 class="text-center color-white mb-5">Расходы по результатам поиска: {{search_expenses}} руб.</h5>
             </div>
         </div>
         <div class="row text-center">
             <div class="col-12">
-                <table class="table table-dark table-hover table_block" id="1">
-                    <thead class="table-primary">
+                <table class="table table-light table-hover table rounded">
+                    <thead class="table-dark">
                         <tr>
                             <th scope="col" style="text-align: center">Описание</th>
                             <th scope="col" style="text-align: center">Категория</th>
@@ -127,7 +127,7 @@
         {% else %}
         <div class="row text-center">
             <div class="col-12">
-                <h1 class="text-center color1 text-uppercase">Пока записей нет</h1>
+                <h1 class="text-center color-white text-uppercase">Пока записей нет</h1>
             </div>
         </div>
         {% endif %}
@@ -141,9 +141,9 @@
             <div class="row text-center">
                 <div class="col-12">
                     {% if user.wallet.revenues %}
-                        <h5 class="text-center color1 mb-5">Доход: {{user.wallet.revenues}} руб.</h5>
+                        <h5 class="text-center color-white mb-5">Доход: {{user.wallet.revenues}} руб.</h5>
                     {% else %}
-                        <h5 class="text-center color1 mb-5">Доход: 0 руб.</h5>
+                        <h5 class="text-center color-white mb-5">Доход: 0 руб.</h5>
                     {% endif %}
 
                     <!-- Modal button -->
@@ -177,7 +177,7 @@
                     </div>
 
                     <div  style="margin-bottom: 100px">
-                        <h5 class="text-center color1 mt-3">Общие расходы: {{expenses}} руб.</h5>
+                        <h5 class="text-center color-white mt-3">Общие расходы: {{expenses}} руб.</h5>
                     </div>
                 </div>
             </div>

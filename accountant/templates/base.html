@@ -16,14 +16,14 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm bg-body-tertiary bg-dark border-bottom border-body" data-bs-theme="dark">
+        <nav class="navbar navbar-expand-sm" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{% url "home" %}">
                     <img src="{% static "img/wallet.ico" %}" alt="Bootstrap" width="30" height="30">
                 </a>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        {% for m in mainmenu %}
+                        {% for m in header %}
                         <li class="nav-item">
                             {% url m.url_name as url %}
                             {% if request.path == url %}
@@ -76,9 +76,17 @@
 {% endblock content %}  
 
 
-<footer>
-    
-</footer>
+    <footer>
+        <ul class="nav justify-content-center  pb-3 mb-3" style="color: white">
+            {% for m in footer %}
+            <li class="nav-item">
+                <a class="a-footer" href={{ m.url_name }}>{{m.title}}</a>
+            </li>
+            {% endfor %}    
+        </ul>
+        <div class="line"></div>
+        <p class="text-center" style="color: white">&copy; 2024 self-accountant</p>
+    </footer>
 
 
 </body>

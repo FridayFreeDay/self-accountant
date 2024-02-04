@@ -80,7 +80,8 @@ def chart(request):
     fig.update_layout(
         legend= dict(
             font=dict(
-            size=16
+            size=14,
+            color="white",
             ),
             orientation="h",
             yanchor="bottom",
@@ -96,25 +97,30 @@ def chart(request):
             'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top',
-            'font': {'size': 20, 'family': 'system-ui', 'color': '#003D73'},
+            'font': {'size': 24, 'family': 'system-ui', 'color': 'white'},
         })
 
-    colors = ['#55518E', '#AD567C', '#93BB5D', '#CCB566']
+    colors = ['#AEC670', '#AEC09A', '#778D45', '#344C11']
 
     fig.update_traces(textfont_size=16, marker= dict(colors=colors, line= dict(color='#000000', width=1)))
     chart = fig.to_html(full_html=False)
 
-    fig1 = px.histogram(x=[str(r[3])[:10] for r in record], y=values)
+    fig1 = px.histogram(x=[str(r[3])[:10] for r in record], y=values, color_discrete_sequence=['#AEC670'])
     fig1.update_layout(
         xaxis=dict(
             title='Дата',
-            title_font=dict(size=16),
+            title_font=dict(size=18, color="white"),
             tickformat='%d.%m.%Y', # Формат даты (день.месяц.год)
             tickmode='linear', # Линейный режим для дат(чтобы по 2 раза не отображалось)
+            tickfont=dict(color="white")
         ),
-        yaxis=dict(title='Сумма', title_font=dict(size=16), gridwidth=1), 
+        yaxis=dict(
+            title='Сумма', 
+            title_font=dict(size=18, color="white"), 
+            tickfont=dict(color="white"),
+            gridwidth=1), 
+            
         bargap=0.4,
-   
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         title={
@@ -122,7 +128,7 @@ def chart(request):
             'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top',
-            'font': {'size': 20, 'family': 'system-ui', 'color': '#003D73'},
+            'font': {'size': 24, 'family': 'system-ui', 'color': 'white'},
         })
     fig1.update_traces(hovertemplate='Сумма: %{y}')
 

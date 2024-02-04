@@ -1,5 +1,5 @@
 # Информация по главному меню всех страниц
-menu = [
+header = [
     {'title': "Главная страница", "url_name": "home"},
     {'title': "Мой кошелёк", "url_name": "users:wallet"},
     {'title': "Статистика", "url_name": "users:stat"},
@@ -7,6 +7,15 @@ menu = [
     # {'title': "Помощь", "url_name": "help"},   
 ] 
 
-# Регистрация главного меню, чтобы можно было использовать в любом месте проекта с помощью переменной mainmenu
-def get_menu_context(request):
-    return {"mainmenu": menu}
+footer = [
+    {'title': "GitHub", "url_name": "https://github.com/FridayFreeDay/self-accountant"},
+    {'title': "Telegram", "url_name": "https://t.me/elementalKorolev"},
+    {'title': "Kaggle", "url_name": "https://www.kaggle.com/fridayfreeday"},
+]
+
+# Регистрация главного меню, чтобы можно было использовать в любом месте проекта с помощью переменной header
+def get_header_context(request):
+    return {"header": header}
+
+def get_footer_context(request):
+    return {"footer": footer}
