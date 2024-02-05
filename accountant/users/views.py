@@ -10,10 +10,10 @@ from django.contrib.auth.views import LoginView
 from information.models import Record
 from users.services import chart, pagination_records, records_user, search, search_expenses, search_record_and_expenses
 from users.models import User, Wallet 
-from users.forms import AddWalletForm, ChangeWalletForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm, FilterForm
+from users.forms import AddWalletForm, ChangeWalletForm, ChartForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm, FilterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-
+from django.contrib import messages
 
 
 # Регистрация пользователя
@@ -102,10 +102,16 @@ def delete_record(request):
 
 # Функция отображения графиков на отдельной странице
 def show_stat(request):
+    if request.GET:
+        form = ChartForm(request.GET)
+    else:
+        form = ChartForm()
     ch = chart(request)
     data = {
         "title": "Статистика",
+        "form": form,
         "chart": ch[0],
         "chart1": ch[1],
+        "msg": ch[2],
     }
     return render(request, "users/stat.html", data)

@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from django.contrib import messages
 from django.core.paginator import Paginator
 from users.forms import FilterForm
 from information.models import Record
@@ -72,7 +72,20 @@ def search_record_and_expenses(request):
 
 # Функция вывода графиков
 def chart(request):
-    record = Record.objects.filter(buyer=request.user).values_list(*values_list)
+    msg = "Выберите дату"
+    if request.GET:
+        start = request.GET.get("start")
+        end = request.GET.get("end")
+        record = Record.objects.filter(Q(buyer=request.user),
+                                                                    Q(time_create__date__range=(start, end))).values_list(*values_list)
+        if record:
+            pass
+        else:
+            record = Record.objects.filter(Q(buyer=request.user)).values_list(*values_list)
+            msg = "Нет записей в данном промежутке"
+    else:
+        record = Record.objects.filter(Q(buyer=request.user)).values_list(*values_list)
+
     labels = [r[1] for r in record]
     values = [r[2] for r in record]
 
@@ -115,10 +128,10 @@ def chart(request):
             tickfont=dict(color="white")
         ),
         yaxis=dict(
-            title='Сумма', 
-            title_font=dict(size=18, color="white"), 
+            title='Сумма',
+            title_font=dict(size=18, color="white"),
             tickfont=dict(color="white"),
-            gridwidth=1), 
+            gridwidth=1),
             
         bargap=0.4,
         paper_bgcolor="rgba(0,0,0,0)",
@@ -134,4 +147,4 @@ def chart(request):
 
     chart1 = fig1.to_html(full_html=False)
     
-    return chart, chart1
+    return chart, chart1, msg

@@ -1,10 +1,11 @@
 import datetime
 from django import forms
-from django.contrib.auth import get_user, get_user_model
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 from information.models import Category, Record
+from django.core.validators import MaxValueValidator
 
 from users.models import Wallet
 
@@ -123,3 +124,12 @@ class FilterForm(forms.Form):
                                       widget=forms.CheckboxSelectMultiple(), label="Категория", initial=1)
     start_sum = forms.DecimalField(label="Сумма | от", initial=0)
     end_sum = forms.DecimalField(label="Сумма | до", initial=999999999999)
+
+
+# Форма фильтрации даты для графиков
+class ChartForm(forms.Form):
+    start = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}), label="Дата | от")
+    end = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}),
+                          label="Дата | до",
+                          validators=[MaxValueValidator(limit_value=datetime.date.today(),
+                            message="Пока что мы не можем заглянуть в будущее")])

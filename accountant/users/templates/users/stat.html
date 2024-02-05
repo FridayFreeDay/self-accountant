@@ -4,15 +4,37 @@
 
 <section class="about">
     <div class="container">
-        <div class="row text-center">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <form action="" class="color-white text-center" method="GET">
+                    {% if msg != "Выберите дату" %}
+                    <h5 class="text-danger mb-4">{{msg}}</h5>
+                    {% else %}
+                    <h5 class="mb-4">{{msg}}</h5>
+                    {% endif %}
+                    <div class='text-danger'>{{ form.non_field_errors }}</div>
+                    {% for m in form %}
+                    <p><label class="form-label" for="{{m.id_for_label}}">{{m.label}}</label>{{m}}</p>
+                    <div class="text-danger">{{ m.errors }}</div>  
+                    {% endfor %}
+                    <p><button type="submit" class="btn btn-login btn-sm">Найти</button></p>
+                </form>
+                <a href="{% url "users:stat" %}"><button type="button" class="btn btn-secondary btn-sm">
+                    Сбросить фильтр
+                </button></a>
+            </div>
+        </div>
+            
+        <div class="row">
             <div class="col-12">
                 {{chart1|safe}}
             </div>
         </div>
-        <div class="row text-center">
+        <div class="row" style="margin-top: 150px">
             <div class="col-7">
                 {{chart|safe}}
             </div>
+
             <div class="col-5 color-white">
                 <p>Здесь будут рекомендации и расписанная статистика по тратам</p>
                 <p>Здесь будут рекомендации и расписанная статистика по тратам</p>
