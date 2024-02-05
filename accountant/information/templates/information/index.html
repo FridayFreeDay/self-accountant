@@ -9,8 +9,15 @@
         {% if not user.wallet %}
             <div class="row">
                 <div class="col-12">
+                    {% if messages %}
+                        <div class="alert alert-dismissible" role="alert">
+                            {% for message in messages %}
+                                <div class="alert text-center alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                     <h1 class="text-center color-white mb-5">Создайте кошелёк</h1>
-                    <p class="text-center"><a href="{% url "users:wallet" %}" class="btn btn-primary btn-lg">Мой кошелёк</a></p>
+                    <p class="text-center"><a href="{% url "users:wallet" %}" class="btn btn-login btn-lg">Мой кошелёк</a></p>
                 </div>
             </div>
         {% endif %}

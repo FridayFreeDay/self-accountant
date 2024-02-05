@@ -23,6 +23,14 @@ header, footer{
     background: #212529;
 }
 
+.alert-error {
+  color: red !important;
+  background-color: #ffd4d4 !important;
+  border: 1px solid #a94442 !important;
+  padding: 10px !important;
+  margin-bottom: 10px !important;
+}
+
 /* Текст внутри текста */
 
 .text-inside {

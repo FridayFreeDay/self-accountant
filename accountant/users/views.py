@@ -1,27 +1,62 @@
 from typing import Any
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView 
 from django.contrib.auth.views import LoginView
 from information.models import Record
-from users.services import chart, pagination_records, records_user, search, search_expenses, search_record_and_expenses
+from users.services import activate_email, chart, pagination_records, records_user, search, search_expenses, search_record_and_expenses
 from users.models import User, Wallet 
 from users.forms import AddWalletForm, ChangeWalletForm, ChartForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm, FilterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from users.tokens import account_activation_token
+
+
+# Активация аккаунта пользователя после подверждения почты
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except:
+        user = None
+        
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, "Спасибо за подтверждение электронной почты, теперь вы можете войти в свою учётную запись")
+        return redirect("users:login")
+    else:
+        messages.error(request, "Ссылка для активации недействительна!")
+
+    return redirect("home")
 
 
 # Регистрация пользователя
-class RegistrationUser(CreateView):
-    form_class = RegisterUserForm
-    template_name = "users/registration.html"
-    extra_context = {"title": "Регистрация"}
-    success_url = reverse_lazy("users:login")
+def register(request):
+    if request.method == "POST":
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            activate_email(request, user, form.cleaned_data.get("email"))
+            return redirect("home")
+    else:
+        form = RegisterUserForm()
+
+    data = {
+        "title": "Регистрация",
+        "form": form,
+    }  
+    return render(request, "users/registration.html", data)
 
 # Авторизация пользователя
 class LoginUser(LoginView):
@@ -93,6 +128,7 @@ def wallet_create(request):
     return render(request, "users/create_wallet.html", data)
 
 # Функция удаления записей/трат
+@login_required
 def delete_record(request):
     del_list = request.POST.getlist("delete")
     if del_list:
@@ -101,6 +137,7 @@ def delete_record(request):
 
 
 # Функция отображения графиков на отдельной странице
+@login_required
 def show_stat(request):
     if request.GET:
         form = ChartForm(request.GET)

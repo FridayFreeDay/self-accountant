@@ -1,15 +1,38 @@
 from django.contrib import messages
+from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from users.forms import FilterForm
 from information.models import Record
 from django.db.models import Q
 import plotly.express as px
+from users.tokens import account_activation_token
+from django.contrib.sites.shortcuts import get_current_site
 
 
 
 values_list = ("title", "categories__name", "amount", "time_create", "id")
 
-# Вывод определённого всех записей/трат пользователя
+# Функция отправки сообщения на почту для активации аккаунта через подтверждение по почте
+def activate_email(request, user, to_email):
+    mail_subject = "Активация учётной записи"
+    message = render_to_string("users/activate_account.html", {
+        "user": user.username,
+        "domain": get_current_site(request).domain,
+        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+        "token": account_activation_token.make_token(user),
+        "protocol": "https" if request.is_secure() else "http"
+    })
+    email = EmailMessage(mail_subject, message, to=[to_email])
+    if email.send():
+        messages.success(request, f"Уважаемый(-ая) {user}, пожалуйста, перейдите по указанной почте {to_email} и подвердите регистрацию")
+    else:
+        messages.error(request, f"Проблемы при отправке письма на почту {to_email}, проверьте корректность данных")
+
+
+# Вывод всех записей/трат пользователя
 def records_user(request):
     rec = Record.objects.filter(buyer=request.user).values_list(*values_list)
     page_obj = pagination_records(request, rec)

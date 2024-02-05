@@ -8,15 +8,22 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h2 class="text-center color-white mb-5" style="margin-top: -50px">
+                {% if messages %}
+                    <div class="alert alert-dismissible" role="alert">
+                        {% for message in messages %}
+                            <div class="alert text-center alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <h2 class="text-center color-white mb-5 mt-5" style="margin-top: -50px">
                     {{ title }}
                 </h2>
                 <form method="post" class="text-center">
                     {% csrf_token %}
-                    <div class='form-error'>{{ form.non_field_errors }}</div>
+                    <div class='text-danger'>{{ form.non_field_errors }}</div>
                     {% for f in form %}
                         <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}</label>{{ f }}</p>
-                        <div class="form-error">{{ f.errors }}</div>   
+                        <div class="text-danger">{{ f.errors }}</div>   
                     {% endfor %}
                     <p><button type="submit" class="btn btn-login btn-sm">Вход</button></p>
                 </form>
