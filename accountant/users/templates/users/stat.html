@@ -5,7 +5,8 @@
 <section class="about">
     <div class="container">
         <div class="row mb-5">
-            <div class="col-12 text-center">
+            <div class="col-3"></div>
+            <div class="col-9">
                 <form action="" class="color-white text-center" method="GET">
                     {% if msg != "Выберите дату" %}
                         <h5 class="text-danger mb-4">{{msg}}</h5>
@@ -18,25 +19,30 @@
                     <div class="text-danger">{{ m.errors }}</div>  
                     {% endfor %}
                     <p><button type="submit" class="btn btn-login btn-sm">Найти</button></p>
+                    <a href="{% url "users:stat" %}"><button type="button" class="btn btn-secondary btn-sm">
+                        Сбросить фильтр
+                    </button></a>
                 </form>
-                <a href="{% url "users:stat" %}"><button type="button" class="btn btn-secondary btn-sm">
-                    Сбросить фильтр
-                </button></a>
             </div>
         </div>
             
         <div class="row">
-            <div class="col-12">
+            <div class="col-3"></div>
+            <div class="col-9">
                 {{chart1|safe}}
             </div>
         </div>
-        <div class="row" style="margin-top: 150px">
-            <div class="col-7">
-                {{chart|safe}}
+        <div class="row" style="margin-top: 50px">
+            <div class="col-5"></div>
+            <div class="col-5  text-end">
+                {{chart|safe}}  
             </div>
-
-            <div class="col-5 color-white">
-                <p>Здесь будут рекомендации и расписанная статистика по тратам</p>
+            <div class="col-2"></div>
+        </div>
+        <div class="row" style="margin-top: 50px">
+            <div class="col-3"></div>
+            <div class="col-9 color-white text-center">
+                <p>Здесь будут рекомендации и расписанная статистика ddddddddddddddddddddddddddddddddddddddddddddddddddпо тратам</p>
                 <p>Здесь будут рекомендации и расписанная статистика по тратам</p>
                 <p>Здесь будут рекомендации и расписанная статистика по тратам</p>
                 <p>Здесь будут рекомендации и расписанная статистика по тратам</p>

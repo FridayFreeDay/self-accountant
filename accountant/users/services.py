@@ -138,7 +138,9 @@ def chart(request):
 
     colors = ['#AEC670', '#AEC09A', '#778D45', '#344C11']
 
-    fig.update_traces(textfont_size=16, marker= dict(colors=colors, line= dict(color='#000000', width=1)))
+    fig.update_traces(textfont_size=16, 
+                      marker= dict(colors=colors, line= dict(color='#000000', width=1)),
+                      hovertemplate='Категория: %{label}<br>Сумма: %{value}')
     chart = fig.to_html(full_html=False)
 
     fig1 = px.histogram(x=[str(r[3])[:10] for r in record], y=values, color_discrete_sequence=['#AEC670'])

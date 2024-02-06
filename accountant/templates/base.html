@@ -15,15 +15,14 @@
     <title> {{title}} </title>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm" data-bs-theme="dark">
-            <div class="container-fluid">
+    <div class="row">
+        <div class="col-3">
+            <nav id="menu" role="navigation">
                 <a class="navbar-brand" href="{% url "home" %}">
                     <img src="{% static "img/wallet.ico" %}" alt="Bootstrap" width="30" height="30">
                 </a>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        {% for m in header %}
+                <ul>
+                    {% for m in header %}
                         <li class="nav-item">
                             {% url m.url_name as url %}
                             {% if request.path == url %}
@@ -32,44 +31,47 @@
                                 <a class="nav-link" aria-current="page" href="{{url}}">{{m.title}}</a>
                             {% endif %}
                         </li>
-                        {% endfor %}    
-                    </ul>
-                    <ul class="navbar-nav navbar-right">
-                        {% if user.is_authenticated %}
-                            <li class="nav-item">
-                                {% url "users:profile" as url %}
-                                {% if request.path == url %}
-                                    <a href="{{url}}" class="nav-link active" aria-current="page">Профиль</a>
-                                {% else %}
-                                    <a href="{{url}}" class="nav-link" aria-current="page">Профиль</a>
-                                {% endif %}
-                            </li>
-                            <li class="nav-item">
-                                <a href="{% url "users:logout" %}" class="nav-link" aria-current="page">Выйти</a>                     
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                {% url "users:login" as url %}
-                                {% if request.path == url %}
-                                    <a href="{{url}}" class="nav-link active" aria-current="page">Войти</a>
-                                {% else %}
-                                    <a href="{{url}}" class="nav-link" aria-current="page">Войти</a>
-                                {% endif %}
-                            </li>
-                            <li class="nav-item">
-                                {% url "users:register" as url %}
-                                {% if request.path == url %}
-                                    <a href="{{url}}" class="nav-link active" aria-current="page">Регистрация</a>
-                                {% else %}
-                                    <a href="{{url}}" class="nav-link" aria-current="page">Регистрация</a>
-                                {% endif %}
-                            </li>
-                        {% endif %} 
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+                    {% endfor %}
+        
+                </ul>
+                <ul class="navbar-nav navbar-right" style="margin-top: 100%">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            {% url "users:profile" as url %}
+                            {% if request.path == url %}
+                                <a href="{{url}}" class="nav-link active" aria-current="page">Профиль</a>
+                            {% else %}
+                                <a href="{{url}}" class="nav-link" aria-current="page">Профиль</a>
+                            {% endif %}
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url "users:logout" %}" class="nav-link" aria-current="page">Выйти</a>                     
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            {% url "users:login" as url %}
+                            {% if request.path == url %}
+                                <a href="{{url}}" class="nav-link active" aria-current="page">Войти</a>
+                            {% else %}
+                                <a href="{{url}}" class="nav-link" aria-current="page">Войти</a>
+                            {% endif %}
+                        </li>
+                        <li class="nav-item">
+                            {% url "users:register" as url %}
+                            {% if request.path == url %}
+                                <a href="{{url}}" class="nav-link active" aria-current="page">Регистрация</a>
+                            {% else %}
+                                <a href="{{url}}" class="nav-link" aria-current="page">Регистрация</a>
+                            {% endif %}
+                        </li>
+                    {% endif %} 
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+    
+
     
 {% block content %} 
 
@@ -77,17 +79,22 @@
 
 
     <footer>
-        <ul class="nav justify-content-center  pb-3 mb-3" style="color: white">
-            {% for m in footer %}
-            <li class="nav-item">
-                <a class="a-footer" href={{ m.url_name }}>{{m.title}}</a>
-            </li>
-            {% endfor %}    
-        </ul>
-        <div class="line"></div>
-        <p class="text-center" style="color: white">&copy; 2024 self-accountant</p>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-9">
+                <ul class="nav justify-content-center  pb-3 mb-3" style="color: white">
+                    {% for m in footer %}
+                    <li class="nav-item">
+                        <a class="a-footer" href={{ m.url_name }}>{{m.title}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="line"></div>
+                <p class="text-center" style="color: white">&copy; 2024 self-accountant</p>
+            </div>
+        </div>
     </footer>
 
-
+   
 </body>
 </html>
