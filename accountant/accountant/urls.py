@@ -24,6 +24,7 @@ from information.views import page_not_found
 
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
+    path('captcha/', include('captcha.urls')),
 
     path('admin/', admin.site.urls),
     path("", include("information.urls")),

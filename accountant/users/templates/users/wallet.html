@@ -140,63 +140,67 @@
 </section>
 {% endif %}
 
-<section class="about full">
+{% if user.wallet %}
+<section class="about">
     <div class="container">
-        {% if user.wallet %}
-            <div class="row text-center">
-                <div class="col-3"></div>
-                <div class="col-9">
-                    {% if user.wallet.revenues %}
-                        <h5 class="text-center color-white mb-5">Доход: {{user.wallet.revenues}} руб.</h5>
-                    {% else %}
-                        <h5 class="text-center color-white mb-5">Доход: 0 руб.</h5>
-                    {% endif %}
+        <div class="row text-center">
+            <div class="col-3"></div>
+            <div class="col-9">
+                {% if user.wallet.revenues %}
+                    <h5 class="text-center color-white mb-5">Доход: {{user.wallet.revenues}} руб.</h5>
+                {% else %}
+                    <h5 class="text-center color-white mb-5">Доход: 0 руб.</h5>
+                {% endif %}
 
-                    <!-- Modal button -->
-                    <button type="button" class="btn btn-login btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Изменить
-                    </button>
+                <!-- Modal button -->
+                <button type="button" class="btn btn-login btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Изменить
+                </button>
 
-                    <div class="line"></div>
-                        
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Изменение дохода</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="POST" class="text-center">
-                                        {% csrf_token %} 
-                                        <div class='form-error'>{{ change_form.non_field_errors }}</div>
-                                        {% for m in change_form %}
-                                            <p><label class="form-label" for="{{m.id_for_label}}">{{m.label}}</label>{{m}}</p>
-                                            <div class="form-error">{{ m.errors }}</div>  
-                                        {% endfor %}
-                                        <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
-                                    </form> 
-                                </div>
+                <div class="line"></div>
+                    
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Изменение дохода</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" class="text-center">
+                                    {% csrf_token %} 
+                                    <div class='form-error'>{{ change_form.non_field_errors }}</div>
+                                    {% for m in change_form %}
+                                        <p><label class="form-label" for="{{m.id_for_label}}">{{m.label}}</label>{{m}}</p>
+                                        <div class="form-error">{{ m.errors }}</div>  
+                                    {% endfor %}
+                                    <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>
+                                </form> 
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div  style="margin-bottom: 100px">
-                        <h5 class="text-center color-white mt-3">Общие расходы: {{expenses}} руб.</h5>
-                    </div>
+                <div  style="margin-bottom: 100px">
+                    <h5 class="text-center color-white mt-3">Общие расходы: {{expenses}} руб.</h5>
                 </div>
             </div>
-        {% else %}
-            <div class="row text-center">
-                <div class="col-3"></div>
-                <div class="col-9">
-                    <p class="text-center"><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
-                </div>
-            </div>
-        {% endif %}  
+        </div>
     </div>
 </section>
+{% else %}
+<section class="about full">
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-9">
+                <p class="text-center" style="margin-top: 20%"><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
+            </div>
+        </div>
+    </div>
+</section>       
+{% endif %}  
 
 {% endblock content %}
 

@@ -50,7 +50,7 @@ def pagination_records(request, context_list):
     return page_obj
 
 
-# Функция поиска записей/трат пользователя, суммы трат по GET запросу по переменной q, производится по сумме/описанию/категории 
+# Функция поиска записей/трат пользователя, суммы трат по GET запросу по переменной q, производится по сумме/описанию/категории
 # Возвращает искомые записи, сумму трат по ним
 def search(request):
     query = request.GET.get('q')
@@ -61,7 +61,7 @@ def search(request):
     return page_obj, expenses
 
 
-# Функция фильтрации записей/трат пользователя, суммы трат по GET запросу по переменной cats, производится по фильтрации 
+# Функция фильтрации записей/трат пользователя, суммы трат по GET запросу по переменной cats, производится по фильтрации
 # Возвращает искомые записи, сумму трат по ним
 def search_filter(request):
     filter_form = FilterForm(request.GET)
@@ -96,6 +96,9 @@ def search_record_and_expenses(request):
 # Функция вывода графиков
 def chart(request):
     msg = "Выберите дату"
+    labels = [None]
+    values = [None]
+    x = [None]
     if request.GET:
         start = request.GET.get("start")
         end = request.GET.get("end")
@@ -109,8 +112,10 @@ def chart(request):
     else:
         record = Record.objects.filter(Q(buyer=request.user)).values_list(*values_list)
 
-    labels = [r[1] for r in record]
-    values = [r[2] for r in record]
+    if record:
+        labels = [r[1] for r in record]
+        values = [r[2] for r in record]
+        x = [str(r[3])[:10] for r in record]
 
     fig = px.pie(names=labels, values=values)
     fig.update_layout(
@@ -143,7 +148,7 @@ def chart(request):
                       hovertemplate='Категория: %{label}<br>Сумма: %{value}')
     chart = fig.to_html(full_html=False)
 
-    fig1 = px.histogram(x=[str(r[3])[:10] for r in record], y=values, color_discrete_sequence=['#AEC670'])
+    fig1 = px.histogram(x=x, y=values, color_discrete_sequence=['#AEC670'])
     fig1.update_layout(
         xaxis=dict(
             title='Дата',
@@ -157,7 +162,7 @@ def chart(request):
             title_font=dict(size=18, color="white"),
             tickfont=dict(color="white"),
             gridwidth=1),
-            
+
         bargap=0.4,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -171,5 +176,5 @@ def chart(request):
     fig1.update_traces(hovertemplate='Сумма: %{y}')
 
     chart1 = fig1.to_html(full_html=False)
-    
+
     return chart, chart1, msg

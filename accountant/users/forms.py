@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 from information.models import Category
 from django.core.validators import MaxValueValidator
+from captcha.fields import CaptchaField
 
 from users.models import Wallet
 
@@ -15,7 +16,6 @@ class LoginUserForm(AuthenticationForm):
     # Переопределяем стандартный вид выбранных полей
     username = forms.CharField(max_length=255, label="Логин:", widget=forms.TextInput(attrs={"class": "form-class-active"}))
     password = forms.CharField(max_length=255, label="Пароль:", widget=forms.PasswordInput(attrs={"class": "form-class-active"}))
-
     # Определяем модель пользователя и выбираем поля для отображения в форме
     class Meta:
         model = get_user_model()
@@ -34,6 +34,7 @@ class RegisterUserForm(UserCreationForm):
     password2 = forms.CharField(
         max_length=255, label="Подтвердите пароль:", widget=forms.PasswordInput(attrs={"class": "form-class-active"})
     )
+    captcha = CaptchaField()
 
     # Определяем модель пользователя для формы, поля для отображения, переопределяем названия
     # некоторых полей, переопределяем стандартный вид некоторых полей
@@ -68,7 +69,7 @@ class RegisterUserForm(UserCreationForm):
 
 # Форма личного кабинета пользователя
 class ProfileUserForm(forms.ModelForm):
-    # Переопределяем стандартный вид выбранных полей и задаём, 
+    # Переопределяем стандартный вид выбранных полей и задаём,
     # что не можем редактировать username и email(disabled=True)
     # определяем поле для выбора года, месяца и дня рождения
     username = forms.CharField(
@@ -81,9 +82,9 @@ class ProfileUserForm(forms.ModelForm):
     date_birth = forms.DateField(
         label = "Дата рождения:",
         widget=forms.SelectDateWidget(years=tuple(range(this_year - 100, this_year - 5)), attrs={"class": "form-class-active"}))
-    
+
     # Определяем модель пользователя для формы, выбираем поля для отображения,
-    # переименовываем оставшиеся поля для отображения, переопределяем стандартный вид оставшихся полей 
+    # переименовываем оставшиеся поля для отображения, переопределяем стандартный вид оставшихся полей
     class Meta:
         model = get_user_model()
         fields = ["username", "email", "date_birth", "first_name", "last_name"]

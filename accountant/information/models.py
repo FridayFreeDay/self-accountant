@@ -12,14 +12,14 @@ class Category(models.Model):
 
     def __str__(self) -> str:
         return self.name
-    
+
     class Meta:
         verbose_name = "Категории"
         verbose_name_plural = "Категории"
 
     # def get_absolute_url(self):
     #     return reverse("category", kwargs={"cat_slug": self.slug})
-        
+
 # Таблица с покупками/тратами
 class Record(models.Model):
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')

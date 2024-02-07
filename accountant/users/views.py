@@ -1,5 +1,5 @@
 from typing import Any
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
@@ -7,11 +7,11 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView 
+from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
 from django.contrib.auth.views import LoginView
 from information.models import Record
 from users.services import activate_email, chart, pagination_records, records_user, search, search_expenses, search_record_and_expenses
-from users.models import User, Wallet 
+from users.models import User, Wallet
 from users.forms import AddWalletForm, ChangeWalletForm, ChartForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm, FilterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -27,7 +27,7 @@ def activate(request, uidb64, token):
         user = User.objects.get(pk=uid)
     except:
         user = None
-        
+
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
@@ -55,7 +55,7 @@ def register(request):
     data = {
         "title": "Регистрация",
         "form": form,
-    }  
+    }
     return render(request, "users/registration.html", data)
 
 # Авторизация пользователя
@@ -80,7 +80,7 @@ class ProfileUser(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None) -> Model:
         return get_object_or_404(User, username=self.request.user.username)
- 
+
 # Вывод кошелька пользователя и его трат(по поиску или по страницам), возможность добавлять новые записи и изменять доход
 @login_required
 def wallet_user(request):

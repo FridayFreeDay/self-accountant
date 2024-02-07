@@ -18,8 +18,7 @@ class Wallet(models.Model):
 
     def __str__(self) -> str:
         return "Кошелёк: " + self.own
-    
+
     class Meta:
         verbose_name = "Кошелёк"
         verbose_name_plural = "Кошельки"
-
