@@ -1,8 +1,9 @@
 html{
-
+  position: relative;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  height: 100%;
 }
 
 table{ 
@@ -17,14 +18,9 @@ body{
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  height:100vh;
+  min-height:100%;
   margin: 0;
   padding: 0;
-}
-
-/* Колонка на всю высоту экрана */
-.full{
-  height: 100vh;
 }
 
 li {
@@ -116,6 +112,21 @@ header{
     background: #0d3045;
 }
 
+
+/* Главная страница */
+.hello{
+  font-size: 18px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.cap{
+  color: var(--accent);
+}
+.cap:hover{
+  color: var(--dark_accent);
+}
+
 /* Сообщение об ошибке */
 .alert-error {
   color: red !important;
@@ -123,16 +134,6 @@ header{
   border: 1px solid #a94442 !important;
   padding: 10px !important;
   margin-bottom: 10px !important;
-}
-
-/* Текст внутри текста */
-
-.text-inside {
-  font-size: 25px;
-}
-.text-inside:hover {
-  font-size: 25px;
-  color: var(--light_pr);
 }
 
 /* Таблица */
@@ -209,7 +210,7 @@ form {
 
 /* Главный шрифт */
 .fixed-font-size{
-  font-size: 16px;
+  font-size: 18px;
 }
 /* Кнопка фильтрации */
 
@@ -220,7 +221,7 @@ form {
   background-color: var(--backhv);
   margin: 0 auto;
   padding: 8px 30px;
-  font-size: 16px;
+  font-size: 18px;
   border-radius: 0.375em;
 }
 .btn-filter:hover {
@@ -230,7 +231,7 @@ form {
   background-color: var(--backhv);
   margin: 0 auto;
   padding: 8px 30px;
-  font-size: 16px;
+  font-size: 18px;
   border-radius: 0.375em;
 }
 
@@ -295,7 +296,7 @@ form {
 .color-white{
   color: white;
 }
-.color2{
+.color-accent{
   color: var(--accent);
 }
 .bgcolor1{

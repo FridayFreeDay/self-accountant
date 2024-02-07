@@ -5,8 +5,8 @@
 {% block content %}
 
 {% if user.wallet %}
-<section class="about">
-    <div class="container">
+<section class="about d-flex min-vh-100">
+    <div class="container mt-auto mb-auto">
         <div class="row text-center" style="margin-bottom: 50px">
             <div class="col-3"></div>
             <div class="col-9">
@@ -190,12 +190,12 @@
     </div>
 </section>
 {% else %}
-<section class="about full">
-    <div class="container">
+<section class="about d-flex min-vh-100">
+    <div class="container mt-auto mb-auto">
         <div class="row">
             <div class="col-3"></div>
             <div class="col-9">
-                <p class="text-center" style="margin-top: 20%"><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
+                <p class="text-center"><a href="{% url "users:create_wallet" %}" class="btn btn-login btn-sm" >Создать кошелёк</a></p>
             </div>
         </div>
     </div>

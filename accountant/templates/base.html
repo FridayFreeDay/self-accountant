@@ -34,7 +34,8 @@
                     {% endfor %}
         
                 </ul>
-                <ul class="navbar-nav navbar-right" style="margin-top: 100%">
+            
+                <ul style="position: sticky; top: 80%;">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             {% url "users:profile" as url %}
@@ -90,7 +91,7 @@
                     {% endfor %}
                 </ul>
                 <div class="line"></div>
-                <p class="text-center" style="color: white">&copy; 2024 self-accountant</p>
+                <p class="text-center" style="color: white">&copy; 2024 self accountant</p>
             </div>
         </div>
     </footer>

@@ -4,38 +4,57 @@
 
 {% block content %}
 
-<section class="about full">
-    <div class="container">
-        {% if not user.wallet %}
-            <div class="row">
-                <div class="col-3"></div>
-                <div class="col-9">
-                    {% if messages %}
-                        <div class="alert alert-dismissible" role="alert">
-                            {% for message in messages %}
-                                <div class="alert text-center alert-{{ message.tags }}">{{ message }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    <h1 class="text-center color-white mb-5">Создайте кошелёк</h1>
-                    <p class="text-center"><a href="{% url "users:wallet" %}" class="btn btn-login btn-lg">Мой кошелёк</a></p>
-                </div>
-            </div>
-        {% endif %}
+
+<section class="about d-flex min-vh-100">
+    <div class="container mt-auto mb-auto">
         <div class="row text-center">
             <div class="col-3"></div>
             <div class="col-9 color-white">
-                <p>dadddddddd</p>
-                <p>dadddddddd</p>
-                <p>dadddddddd</p>
-                <p>dadddddddd</p>
-                <p>dadddddddd</p>
-                <p>dadddddddd</p>
-                <p>dadddddddd</p>
+                <h1>Добро пожаловать в <b class="color-accent">self accountant!</b></h1>
+                <p class="hello">Это приложение - ваш личный бухгалтер для эффективного управления финансами!
+                    Мы предлагаем удобный и надежный инструмент для отслеживания доходов и расходов, составления бюджета, планирования сбережений и инвестиций. 
+                    С нами вы сможете легко контролировать свои финансы, оптимизировать расходы и достигать своих финансовых целей. 
+                    Доверьте свои финансы профессионалам и сделайте управление деньгами удобным!</p>
+                <h2>Возможности</h2>
+                <h5 class="text-start" style="padding-top: 20px"><a href="{% url "users:wallet" %}" class="cap">&#8594; Учёт расходов</a></h5>
+                <p class="hello">Наше приложение предоставляет удобную возможность записывать расходы в зависимости от категорий трат. 
+                    Вы сможете легко отслеживать, на что именно уходят ваши деньги, разделяя их по категориям, таким как питание, транспорт, развлечения, медицинские расходы и многое другое. 
+                    Это поможет вам лучше понимать, куда уходит ваш бюджет и оптимизировать свои финансы. 
+                    Благодаря удобной структуре категорий трат вы сможете легко анализировать свои расходы и принимать более обоснованные финансовые решения.</p>
+                <h5 class="text-start"><a href="{% url "users:stat" %}" class="cap">&#8594; Статистика и рекомендации</a></h5>
+                <p class="hello">Мы предоставляем возможность просматривать статистику расходов по датам и категориям. 
+                    Вы сможете увидеть, сколько денег было потрачено за определенный период времени на определенные категории трат. 
+                    Это позволит вам лучше понимать, где именно уходят ваши деньги и на что стоит обратить особое внимание при планировании бюджета.
+                    
+                    Кроме того, наше приложение предлагает рекомендации для более эффективного распределения бюджета. 
+                    Оно анализирует ваши траты и может подсказать, где можно сэкономить, какие категории трат можно уменьшить или оптимизировать. 
+                    Это поможет вам более осознанно управлять своими финансами и достичь своих финансовых целей. 
+                    Благодаря статистике и персонализированным рекомендациям вы сможете легче планировать свой бюджет и добиваться финансовой стабильности.</p>
             </div>
         </div>
     </div>
 </section>
+            
+{% if not user.wallet %}
+<section class="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-9">
+                {% if messages %}
+                    <div class="alert alert-dismissible" role="alert">
+                        {% for message in messages %}
+                            <div class="alert text-center alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <h1 class="text-center color-white mb-5">Создайте кошелёк</h1>
+                <p class="text-center"><a href="{% url "users:wallet" %}" class="btn btn-login btn-lg">Мой кошелёк</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
 
 {% endblock content %}
 
