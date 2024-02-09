@@ -1,5 +1,5 @@
 from typing import Any
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model, login
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
@@ -58,12 +58,36 @@ def register(request):
     }
     return render(request, "users/registration.html", data)
 
+
 # Авторизация пользователя
-class LoginUser(LoginView):
-    form_class = LoginUserForm
-    template_name = "users/login.html"
-    extra_context = {"title": "Авторизация"}
-    success_url = reverse_lazy("index:home")
+def login_user(request):
+    if request.method == "POST":
+        form = LoginUserForm(data=request.POST)
+        if form.is_valid():
+            f = form.cleaned_data
+            user = authenticate(request, username=f["username"], password=f["password"])
+            if user and user.is_active:
+                    login(request, user)
+                    return redirect(reverse("home"))
+        else:
+            try:
+                User = get_user_model().objects.get(username=request.POST["username"])
+            except:
+                messages.error(request, "Такого пользователя не существует, пожалуйста, зарегистрируйтесь")
+                return redirect(reverse_lazy("users:register"))
+            else:
+                if User and not User.is_active:
+                    to_email = User.email
+                    activate_email(request, User, to_email)
+    else:
+        form = LoginUserForm()
+    data = {
+        "title": "Авторизация",
+        "form": form,
+    }
+    return render(request, "users/login.html", data)
+
+
 
 # Вывод профиля пользователя и возможность его менять
 class ProfileUser(LoginRequiredMixin, UpdateView):

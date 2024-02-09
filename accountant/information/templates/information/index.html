@@ -10,7 +10,14 @@
         <div class="row text-center">
             <div class="col-3"></div>
             <div class="col-9 color-white">
-                <h1>Добро пожаловать в <b class="color-accent">self accountant!</b></h1>
+                {% if messages %}
+                    <div class="alert alert-dismissible" role="alert">
+                        {% for message in messages %}
+                            <div class="alert text-center alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <h1 class="mt-5">Добро пожаловать в <b class="color-accent">self accountant!</b></h1>
                 <p class="hello">Это приложение - ваш личный бухгалтер для эффективного управления финансами!
                     Мы предлагаем удобный и надежный инструмент для отслеживания доходов и расходов, составления бюджета, планирования сбережений и инвестиций. 
                     С нами вы сможете легко контролировать свои финансы, оптимизировать расходы и достигать своих финансовых целей. 
@@ -41,13 +48,6 @@
         <div class="row">
             <div class="col-3"></div>
             <div class="col-9">
-                {% if messages %}
-                    <div class="alert alert-dismissible" role="alert">
-                        {% for message in messages %}
-                            <div class="alert text-center alert-{{ message.tags }}">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
                 <h1 class="text-center color-white mb-5">Создайте кошелёк</h1>
                 <p class="text-center"><a href="{% url "users:wallet" %}" class="btn btn-login btn-lg">Мой кошелёк</a></p>
             </div>
