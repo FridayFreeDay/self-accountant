@@ -123,7 +123,7 @@ def wallet_user(request):
     data ={
         "title": "Кошелёк",
         "record": record,
-        "expenses": search_expenses(None),
+        "expenses": sum(Record.objects.all().values_list("amount", flat=True)),
         "search_expenses": search_expenses_list,
         "change_form": change_form,
         "filter_form": FilterForm(),
