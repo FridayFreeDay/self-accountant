@@ -6,8 +6,10 @@ from users.models import User
 
 # Таблица категорий
 class Category(models.Model):
-    name = models.CharField(max_length=255, blank=True,verbose_name='Название категории')
-    # subcategory = models.CharField(blank=True, null=True, max_length=255, verbose_name='Подкатегория')
+    name = models.CharField(max_length=255, blank=True, verbose_name='Название категории')
+    subcategory = models.CharField(null=True, max_length=255, verbose_name='Подкатегория', choices=[("1", "Потребности"),
+                                                                                                    ("2", "Развлечения"),
+                                                                                                    ("3", "Сбережения и инвестиции")])
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
 
     def __str__(self) -> str:

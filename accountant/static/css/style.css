@@ -179,7 +179,7 @@ form {
   padding: 0 5px;
 }
 .form-class-active {
-  background-color: var(--сolor3); 
+  background-color: var(--dark_pr); 
   color: white; 
   border-width: 2px;
   border-color: black;
@@ -205,7 +205,7 @@ form {
   min-width: 100px;
   max-width: 100px;
   font-size: 18px;
-  color:rgba(var(--bs-secondary-rgb));
+  color: rgba(var(--bs-secondary-rgb));
 }
 
 /* Главный шрифт */
@@ -218,7 +218,7 @@ form {
   min-width: 200px;
   max-width: 200px;
   color: var(--bs-white);
-  background-color: var(--backhv);
+  background-color: var(--dark_pr);
   margin: 0 auto;
   padding: 8px 30px;
   font-size: 18px;
@@ -228,7 +228,7 @@ form {
   min-width: 200px;
   max-width: 200px;
   color: var(--bs-white);
-  background-color: var(--backhv);
+  background-color: var(--dark_pr);
   margin: 0 auto;
   padding: 8px 30px;
   font-size: 18px;

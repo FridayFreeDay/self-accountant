@@ -20,6 +20,7 @@ def index(request):
     }
     return render(request, "information/index.html", context=data)
 
+
 # Функция добавления записи о трате
 @login_required
 def add_record(request):

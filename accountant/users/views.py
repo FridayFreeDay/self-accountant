@@ -10,7 +10,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
 from django.contrib.auth.views import LoginView
 from information.models import Record
-from users.services import activate_email, chart, pagination_records, records_user, search, search_expenses, search_record_and_expenses
+from users.services import activate_email, chart, create_recommendations, pagination_records, records_user, search, search_expenses, search_record_and_expenses
 from users.models import User, Wallet
 from users.forms import AddWalletForm, ChangeWalletForm, ChartForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm, FilterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -31,10 +31,10 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.success(request, "Спасибо за подтверждение электронной почты, теперь вы можете войти в свою учётную запись")
+        messages.success(request, "Спасибо за подтверждение электронной почты, теперь вы можете войти в свою учётную запись.")
         return redirect("users:login")
     else:
-        messages.error(request, "Ссылка для активации недействительна!")
+        messages.error(request, "Ссылка для активации недействительна! Перейдите на страницу авторизации(войти) и введите свои данные повторно.")
 
     return redirect("home")
 
@@ -73,7 +73,7 @@ def login_user(request):
             try:
                 User = get_user_model().objects.get(username=request.POST["username"])
             except:
-                messages.error(request, "Такого пользователя не существует, пожалуйста, зарегистрируйтесь")
+                messages.error(request, "Такого пользователя не существует, пожалуйста, зарегистрируйтесь.")
                 return redirect(reverse_lazy("users:register"))
             else:
                 if User and not User.is_active:
@@ -108,6 +108,7 @@ class ProfileUser(LoginRequiredMixin, UpdateView):
 # Вывод кошелька пользователя и его трат(по поиску или по страницам), возможность добавлять новые записи и изменять доход
 @login_required
 def wallet_user(request):
+    search_expenses_list = 0
     if request.method == "POST":
         change_form = ChangeWalletForm(request.POST)
         if change_form.is_valid():
@@ -115,7 +116,6 @@ def wallet_user(request):
             Wallet.objects.filter(own=request.user.email).update(revenues=f["revenues"])
     else:
         change_form = ChangeWalletForm()
-    search_expenses_list = 0
     if request.GET.get("q") or request.GET.get("cats"):
         record, search_expenses_list = search_record_and_expenses(request)
     else:
@@ -123,7 +123,7 @@ def wallet_user(request):
     data ={
         "title": "Кошелёк",
         "record": record,
-        "expenses": search_expenses(),
+        "expenses": search_expenses(None),
         "search_expenses": search_expenses_list,
         "change_form": change_form,
         "filter_form": FilterForm(),
@@ -151,6 +151,7 @@ def wallet_create(request):
     }
     return render(request, "users/create_wallet.html", data)
 
+
 # Функция удаления записей/трат
 @login_required
 def delete_record(request):
@@ -168,11 +169,13 @@ def show_stat(request):
     else:
         form = ChartForm()
     ch = chart(request)
+    recommendations = create_recommendations(request)
     data = {
         "title": "Статистика",
         "form": form,
         "chart": ch[0],
         "chart1": ch[1],
         "msg": ch[2],
+        "rec": recommendations,
     }
     return render(request, "users/stat.html", data)

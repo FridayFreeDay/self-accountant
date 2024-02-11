@@ -20,5 +20,5 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display_links = ["name"]
     # Внутри
     save_on_top = True
-    fields = ["name", "slug"]
+    fields = ["name", "subcategory", "slug"]
     inlines = [RecordAdmin]
