@@ -1,7 +1,8 @@
+from django.contrib import messages
 from django.http import HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from users.models import User
+from users.models import User, Wallet
 from users.services import pagination_records, records_user, search_expenses
 from information.models import Record
 from django.contrib.auth.decorators import login_required
@@ -29,8 +30,13 @@ def add_record(request):
         if form.is_valid():
             f = form.cleaned_data
             f["buyer"] = request.user
-            Record.objects.create(**f)
-            return redirect(reverse("users:wallet"))
+            expenses = sum(Record.objects.all().values_list("amount", flat=True)) + f["amount"]
+            if expenses <= Wallet.objects.get(owner=request.user).revenues:
+                Record.objects.create(**f)
+                return redirect(reverse("users:wallet"))
+            else:
+                messages.error(request, "Сумма расходов превышает доходы! Измените значение своей доходности.")
+                return redirect(request.META.get('HTTP_REFERER'))
     else:
         form = RecordForm()
     data = {

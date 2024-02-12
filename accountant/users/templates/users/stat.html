@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -52,13 +53,16 @@
                 {% if request.user.buying %}
                 <div class="acor-container text-center">
                     {% for r in rec %}
-                    <input type="checkbox" name="chacor" id="{{r|first}}" checked="checked" />
-                    <label for="{{r|first}}">
-                        <h5 class="text-center">{{r|first}}</h5>
+                    <input type="checkbox" name="chacor" id="{{r|slice:"1:2"|first}}" checked="checked"/>
+                    <label for="{{r|slice:"1:2"|first}}">
+                        <div class="text-center">
+                            <div class="text-start"><img class="image1" src="{% static r|first %}" width="40" height="40"></div>
+                            <div class="te"><h4>{{r|slice:"1:2"|first}}</h4></div>
+                        </div>
                         <p class="text-start" style="font-size: 16px; color: #dfb68c">{{r|last}}% от дохода</p>
                     </label>
                     <div class="acor-body">
-                        <p>{{r|slice:"1:2"|first}}</p>
+                        <p>{{r|slice:"2:3"|first}}</p>
                     </div>
                     {% endfor %}                  
                 {% else %}

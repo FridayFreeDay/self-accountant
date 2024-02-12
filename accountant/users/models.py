@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -17,9 +18,6 @@ class Wallet(models.Model):
     revenues = models.DecimalField(null=True, default=0,
                                    max_digits = 17, decimal_places = 2,
                                    validators=[validate_positive], verbose_name="Доходы:")
-    expenses = models.DecimalField(blank=True, null=True,
-                                   max_digits = 17, decimal_places = 2,
-                                   verbose_name="Расходы:")
     owner=models.OneToOneField(to="User", on_delete=models.CASCADE,
                                null=True, blank=True,
                                related_name="wallet", verbose_name="Владелец")
