@@ -72,6 +72,7 @@ class ProfileUserForm(forms.ModelForm):
     # Переопределяем стандартный вид выбранных полей и задаём,
     # что не можем редактировать username и email(disabled=True)
     # определяем поле для выбора года, месяца и дня рождения
+    photo = forms.ImageField(label="Фото:", widget=forms.FileInput(attrs={"type": "file"}))
     username = forms.CharField(
         max_length=255, label="Логин:", disabled=True, widget=forms.TextInput(attrs={"class": "form-class-none"})
     )
@@ -87,7 +88,7 @@ class ProfileUserForm(forms.ModelForm):
     # переименовываем оставшиеся поля для отображения, переопределяем стандартный вид оставшихся полей
     class Meta:
         model = get_user_model()
-        fields = ["username", "email", "date_birth", "first_name", "last_name"]
+        fields = ["photo", "username", "email", "date_birth", "first_name", "last_name"]
         labels = {
             "first_name": "Имя:",
             "last_name": "Фамилия:",

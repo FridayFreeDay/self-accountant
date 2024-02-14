@@ -12,11 +12,18 @@
                 <h2 class="text-center color-white mb-5" style="margin-top: -50px">
                     {{ title }}
                 </h2>
-                <form method="post" class="text-center">
+                {% if user.photo %}
+                    <p class="profile mb-5"><img src="{{user.photo.url}}"></p>
+                {% endif %}
+                <form method="post" class="text-center" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class='text-danger'>{{ form.non_field_errors }}</div>
                     {% for f in form %}
+                        {% if f.label != "Фото:" %}
                         <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}</label>{{ f }}</p>
+                        {% else %}
+                        <p style="color: white;" title="Выберите фотографию профиля">{{ f }}</p>
+                        {% endif %}
                         <div class="text-danger">{{ f.errors }}</div>   
                     {% endfor %}
                     <p><button type="submit" class="btn btn-login btn-sm">Сохранить</button></p>

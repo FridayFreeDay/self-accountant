@@ -6,6 +6,11 @@ html{
   height: 100%;
 }
 
+input[type='file'] {
+  padding-left: 180px;
+  color: transparent;
+}
+
 table{ 
   overflow: hidden; 
   border-radius: 50px;
@@ -33,29 +38,47 @@ a {
 }
 
 
-/* Изображения png */
+/* Изображение в профиле */
+
+.profile {  
+  position: relative;
+  overflow:hidden;
+  width:250px;
+  height:250px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 20px 2px rgba(3, 120, 174, 0.8);
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+.profile img {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:250px;
+  height:250px;
+  object-fit:cover;
+}
+
+
+/* Изображения в статистике */
 
 .image1 { 
-  margin-right: 5px;
   filter: invert(100%); 
   -webkit-filter:invert(100%); 
   } 
 
 .list {
   display: flex;
-  /* justify-content: space-between; */
 }
 
 .li_row_left {
   display: inline-block; 
-  /* margin-right: 40%; */
-  /* margin-left: auto; */
 }
 .li_row_right {
   display: inline-block; 
   align-items: center;
-  /* margin: 0 auto; */
-  /* margin-left: auto; */
 }
 
 
