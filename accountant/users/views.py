@@ -2,7 +2,7 @@ from typing import Any
 from django.contrib.auth import authenticate, get_user_model, login
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
-from django.http import HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.encoding import force_str
@@ -94,6 +94,12 @@ class ProfileUser(LoginRequiredMixin, UpdateView):
     form_class = ProfileUserForm
     template_name = "users/profile.html"
 
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        self.object = self.get_object()
+        if self.object.photo:
+            User.objects.get(pk=self.object.pk).photo.delete()
+        return super().post(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = "Профиль"
@@ -123,7 +129,7 @@ def wallet_user(request):
     data ={
         "title": "Кошелёк",
         "record": record,
-        "expenses": sum(Record.objects.all().values_list("amount", flat=True)),
+        "expenses": sum(Record.objects.filter(buyer=request.user).values_list("amount", flat=True)),
         "search_expenses": search_expenses_list,
         "change_form": change_form,
         "filter_form": FilterForm(),
@@ -164,6 +170,10 @@ def delete_record(request):
 # Функция отображения графиков на отдельной странице
 @login_required
 def show_stat(request):
+    wallet = Wallet.objects.filter(owner=request.user).exists()
+    if not wallet:
+        messages.warning(request, "Для отображения статистики необходимо создать кошелёк.")
+        return redirect(reverse("users:wallet"))
     if request.GET:
         form = ChartForm(request.GET)
     else:

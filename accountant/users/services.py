@@ -183,10 +183,13 @@ def create_recommendations(request):
             cat2 += rec[1]
         else:
             cat3 += rec[1]
-    share1 = round((cat1 / revenues * 100), 2)
-    share2 = round((cat2 / revenues * 100), 2)
-    share3 = round((cat3 / revenues * 100), 2)
-    message = share_by_category(share1, share2, share3)
+    if cat1 == cat2 == cat3 == 0:
+        message = None
+    else:
+        share1 = round((cat1 / revenues * 100), 2)
+        share2 = round((cat2 / revenues * 100), 2)
+        share3 = round((cat3 / revenues * 100), 2)
+        message = share_by_category(share1, share2, share3)
 
     return message
 

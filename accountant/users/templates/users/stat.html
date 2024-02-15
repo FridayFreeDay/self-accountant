@@ -50,7 +50,7 @@
                     let currentMonth = months[date.getMonth()];
                     document.getElementById('currentMonth').innerHTML = `Статистика расходов за ${currentMonth}`;
                 </script>
-                {% if request.user.buying %}
+                {% if rec %}
                 <div class="acor-container text-center">
                     {% for r in rec %}
                     <input type="checkbox" name="chacor" id="{{r|slice:"1:2"|first}}" checked="checked"/>
