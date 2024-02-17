@@ -1,10 +1,9 @@
 from django.contrib import messages
 from django.core.cache import cache
 from django.http import HttpResponseNotFound
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from users.models import User, Wallet
-from users.services import pagination_records, records_user, search_expenses
+from users.models import Wallet
 from information.models import Record
 from django.contrib.auth.decorators import login_required
 
@@ -35,7 +34,6 @@ def add_record(request):
             if expenses <= Wallet.objects.get(owner=request.user).revenues:
                 cache.delete(f"expenses_{request.user.id}")
                 cache.delete(f"record_{request.user.id}")
-                cache.delete(f"chart_record_{request.user.id}")
                 cache.delete(f"recomend_record_{request.user.id}")
                 cache.set(f"expenses_{request.user.id}", expenses, 60 * 20)
                 Record.objects.create(**f)

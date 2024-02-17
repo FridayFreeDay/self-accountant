@@ -117,9 +117,11 @@ def wallet_user(request):
         change_form = ChangeWalletForm(request.POST)
         if change_form.is_valid():
             f = change_form.cleaned_data
-            cache.delete(f"revenues_{request.user.id}")
-            revenues = Wallet.objects.filter(own=request.user.email).update(revenues=f["revenues"])
-            # cache.set(f"revenues_{request.user.id}", revenues, 60 * 20)
+            if f["revenues"] >= cache.get(f"expenses_{request.user.id}"):
+                cache.delete(f"revenues_{request.user.id}")
+                Wallet.objects.filter(own=request.user.email).update(revenues=f["revenues"])
+            else:
+                messages.error(request, "Доход не должен быть меньше суммы расходов.")
     else:
         change_form = ChangeWalletForm()
 
@@ -173,7 +175,6 @@ def delete_record(request):
         Record.objects.filter(id__in=del_list).delete()
     cache.delete(f"expenses_{request.user.id}")
     cache.delete(f"record_{request.user.id}")
-    cache.delete(f"chart_record_{request.user.id}")
     cache.delete(f"recomend_record_{request.user.id}")
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

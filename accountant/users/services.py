@@ -293,27 +293,24 @@ def chart(request):
     labels = [None]
     values = [None]
     x = [None]
-    record = cache.get(f"chart_record_{request.user.id}")
-    if not record:
-        if request.GET:
-            start = request.GET.get("start")
-            end = request.GET.get("end")
-            record = Record.objects.filter(Q(buyer=request.user),
-                                                                        Q(time_create__date__range=(start, end))).values_list(*values_list)
-            if record:
-                pass
-            else:
-                current_datetime = datetime.datetime.today()
-                record = Record.objects.filter(buyer=request.user,
-                                                                            time_create__month = current_datetime.month,
-                                                                            time_create__year = current_datetime.year).values_list(*values_list)
-                msg = "Нет записей в данном промежутке"
+    if request.GET:
+        start = request.GET.get("start")
+        end = request.GET.get("end")
+        record = Record.objects.filter(Q(buyer=request.user),
+                                                                    Q(time_create__date__range=(start, end))).values_list(*values_list)
+        if record:
+            pass
         else:
             current_datetime = datetime.datetime.today()
             record = Record.objects.filter(buyer=request.user,
                                                                         time_create__month = current_datetime.month,
                                                                         time_create__year = current_datetime.year).values_list(*values_list)
-        cache.set(f"chart_record_{request.user.id}", record, 60 * 20)
+            msg = "Нет записей в данном промежутке"
+    else:
+        current_datetime = datetime.datetime.today()
+        record = Record.objects.filter(buyer=request.user,
+                                                                    time_create__month = current_datetime.month,
+                                                                    time_create__year = current_datetime.year).values_list(*values_list)
 
     if record:
         labels = [r[1] for r in record]
