@@ -1,5 +1,6 @@
 import datetime 
 from django.contrib import messages
+from django.core.cache import cache
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
@@ -169,13 +170,20 @@ def share_by_category(sh1, sh2, sh3):
 
 def create_recommendations(request):
     current_datetime = datetime.datetime.today()
-    record =  Record.objects.filter(buyer=request.user,
-                                                                time_create__month = current_datetime.month,
-                                                                time_create__year = current_datetime.year).values_list("categories__subcategory", "amount")
+    record = cache.get(f"recomend_record_{request.user.id}")
+    if not record:
+        record =  Record.objects.filter(buyer=request.user,
+                                                                    time_create__month = current_datetime.month,
+                                                                    time_create__year = current_datetime.year).values_list("categories__subcategory", "amount")
+        cache.set(f"recomend_record_{request.user.id}", record, 60 * 20)
     cat1 = 0
     cat2 = 0
     cat3 = 0
-    revenues = request.user.wallet.revenues
+    revenues = cache.get(f"revenues_{request.user.id}")
+    if not revenues:
+        revenues = request.user.wallet.revenues
+        cache.set(f"revenues_{request.user.id}", revenues, 60 * 20)
+    print(revenues)
     for rec in record:
         if rec[0] == "1":
             cat1 += rec[1]
@@ -216,9 +224,12 @@ def activate_email(request, user, to_email):
 # Вывод всех записей/трат пользователя
 def records_user(request):
     current_datetime = datetime.datetime.today()
-    rec = Record.objects.filter(buyer=request.user,
+    rec = cache.get(f"record_{request.user.id}")
+    if not rec:
+        rec = Record.objects.filter(buyer=request.user,
                                                             time_create__month = current_datetime.month,
                                                             time_create__year = current_datetime.year).values_list(*values_list)
+        cache.set(f"record_{request.user.id}", rec, 60 * 20)
     page_obj = pagination_records(request, rec)
     return page_obj
 
@@ -226,7 +237,6 @@ def records_user(request):
 # Функция отображения записей/трат пользователя в виде таблицы постранично, номер страницы передаётся в GET запросе в переменной page
 # Возвращает страницу с записями
 def pagination_records(request, context_list):
-    # context_list, ch = records_user(request)
     paginator = Paginator(context_list, 10)
 
     page_number = request.GET.get("page")
@@ -238,7 +248,7 @@ def pagination_records(request, context_list):
 # Возвращает искомые записи, сумму трат по ним
 def search(request):
     query = request.GET.get('q')
-    search_list = Record.objects.filter(Q(amount__icontains=query)|
+    search_list = Record.objects.filter(Q(buyer=request.user), Q(amount__icontains=query)|
                                         Q(title__icontains=query)|Q(categories__name__icontains=query)).values_list(*values_list)
     expenses = search_expenses(search_list)
     page_obj = pagination_records(request, search_list)
@@ -251,7 +261,7 @@ def search_filter(request):
     filter_form = FilterForm(request.GET)
     if filter_form.is_valid():
             f = filter_form.cleaned_data
-    filter_list = Record.objects.filter(Q(categories__id__in=f["cats"]),
+    filter_list = Record.objects.filter(Q(buyer=request.user), Q(categories__id__in=f["cats"]),
                                         Q(amount__gte=f["start_sum"]) & Q(amount__lte=f["end_sum"]),
                                         Q(time_create__date__gte=f["start_date"]) & Q(time_create__date__lte=f["end_date"])).values_list(*values_list)
     expenses = search_expenses(filter_list)
@@ -283,24 +293,27 @@ def chart(request):
     labels = [None]
     values = [None]
     x = [None]
-    if request.GET:
-        start = request.GET.get("start")
-        end = request.GET.get("end")
-        record = Record.objects.filter(Q(buyer=request.user),
-                                                                    Q(time_create__date__range=(start, end))).values_list(*values_list)
-        if record:
-            pass
+    record = cache.get(f"chart_record_{request.user.id}")
+    if not record:
+        if request.GET:
+            start = request.GET.get("start")
+            end = request.GET.get("end")
+            record = Record.objects.filter(Q(buyer=request.user),
+                                                                        Q(time_create__date__range=(start, end))).values_list(*values_list)
+            if record:
+                pass
+            else:
+                current_datetime = datetime.datetime.today()
+                record = Record.objects.filter(buyer=request.user,
+                                                                            time_create__month = current_datetime.month,
+                                                                            time_create__year = current_datetime.year).values_list(*values_list)
+                msg = "Нет записей в данном промежутке"
         else:
             current_datetime = datetime.datetime.today()
             record = Record.objects.filter(buyer=request.user,
                                                                         time_create__month = current_datetime.month,
                                                                         time_create__year = current_datetime.year).values_list(*values_list)
-            msg = "Нет записей в данном промежутке"
-    else:
-        current_datetime = datetime.datetime.today()
-        record = Record.objects.filter(buyer=request.user,
-                                                                    time_create__month = current_datetime.month,
-                                                                    time_create__year = current_datetime.year).values_list(*values_list)
+        cache.set(f"chart_record_{request.user.id}", record, 60 * 20)
 
     if record:
         labels = [r[1] for r in record]

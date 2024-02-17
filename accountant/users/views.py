@@ -1,23 +1,21 @@
 from typing import Any
 from django.contrib.auth import authenticate, get_user_model, login
 from django.db.models.base import Model as Model
-from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
-from django.contrib.auth.views import LoginView
+from django.views.generic import UpdateView
 from information.models import Record
-from users.services import activate_email, chart, create_recommendations, pagination_records, records_user, search, search_expenses, search_record_and_expenses
+from users.services import activate_email, chart, create_recommendations, records_user, search_record_and_expenses
 from users.models import User, Wallet
-from users.forms import AddWalletForm, ChangeWalletForm, ChartForm, LoginUserForm, RegisterUserForm, AuthenticationForm, ProfileUserForm, FilterForm
+from users.forms import AddWalletForm, ChangeWalletForm, ChartForm, LoginUserForm, RegisterUserForm, ProfileUserForm, FilterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from users.tokens import account_activation_token
-
+from django.core.cache import cache
 
 # Активация аккаунта пользователя после подверждения почты
 def activate(request, uidb64, token):
@@ -119,17 +117,26 @@ def wallet_user(request):
         change_form = ChangeWalletForm(request.POST)
         if change_form.is_valid():
             f = change_form.cleaned_data
-            Wallet.objects.filter(own=request.user.email).update(revenues=f["revenues"])
+            cache.delete(f"revenues_{request.user.id}")
+            revenues = Wallet.objects.filter(own=request.user.email).update(revenues=f["revenues"])
+            # cache.set(f"revenues_{request.user.id}", revenues, 60 * 20)
     else:
         change_form = ChangeWalletForm()
+
     if request.GET.get("q") or request.GET.get("cats"):
         record, search_expenses_list = search_record_and_expenses(request)
     else:
         record = records_user(request)
+
+    expenses = cache.get(f"expenses_{request.user.id}")
+    if not expenses:
+        expenses = sum(Record.objects.filter(buyer=request.user).values_list("amount", flat=True))
+        cache.set(f"expenses_{request.user.id}", expenses, 60 * 20)
+
     data ={
         "title": "Кошелёк",
         "record": record,
-        "expenses": sum(Record.objects.filter(buyer=request.user).values_list("amount", flat=True)),
+        "expenses": expenses,
         "search_expenses": search_expenses_list,
         "change_form": change_form,
         "filter_form": FilterForm(),
@@ -164,6 +171,11 @@ def delete_record(request):
     del_list = request.POST.getlist("delete")
     if del_list:
         Record.objects.filter(id__in=del_list).delete()
+    cache.delete(f"expenses_{request.user.id}")
+    cache.delete(f"record_{request.user.id}")
+    cache.delete(f"chart_record_{request.user.id}")
+    cache.delete(f"recomend_record_{request.user.id}")
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

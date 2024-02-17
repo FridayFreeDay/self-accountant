@@ -2,3 +2,4 @@
 .vscode/
 accvenv/
 accountant/accountant/settings.py
+self_cache/
