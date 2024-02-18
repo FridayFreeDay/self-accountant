@@ -1,3 +1,4 @@
+import datetime
 from typing import Any
 from django.contrib.auth import authenticate, get_user_model, login
 from django.db.models.base import Model as Model
@@ -132,7 +133,10 @@ def wallet_user(request):
 
     expenses = cache.get(f"expenses_{request.user.id}")
     if not expenses:
-        expenses = sum(Record.objects.filter(buyer=request.user).values_list("amount", flat=True))
+        current_datetime = datetime.datetime.today()
+        expenses = sum(Record.objects.filter(buyer=request.user,
+                                                time_create__month = current_datetime.month,
+                                                time_create__year = current_datetime.year).values_list("amount", flat=True))
         cache.set(f"expenses_{request.user.id}", expenses, 60 * 20)
 
     data ={

@@ -179,11 +179,12 @@ def create_recommendations(request):
     cat1 = 0
     cat2 = 0
     cat3 = 0
+    
     revenues = cache.get(f"revenues_{request.user.id}")
     if not revenues:
         revenues = request.user.wallet.revenues
         cache.set(f"revenues_{request.user.id}", revenues, 60 * 20)
-    print(revenues)
+
     for rec in record:
         if rec[0] == "1":
             cat1 += rec[1]
