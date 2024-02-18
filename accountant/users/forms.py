@@ -70,7 +70,7 @@ class ProfileUserForm(forms.ModelForm):
     # Переопределяем стандартный вид выбранных полей и задаём,
     # что не можем редактировать username и email(disabled=True)
     # определяем поле для выбора года, месяца и дня рождения
-    photo = forms.ImageField(label="Фото:", widget=forms.FileInput(attrs={"type": "file"}))
+    photo = forms.ImageField(label="Фото:", widget=forms.FileInput(attrs={"type": "file"}), required=False)
     username = forms.CharField(
         max_length=255, label="Логин:", disabled=True, widget=forms.TextInput(attrs={"class": "form-class-none"})
     )
