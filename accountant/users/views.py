@@ -95,7 +95,7 @@ class ProfileUser(LoginRequiredMixin, UpdateView):
 
     def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.object = self.get_object()
-        if self.object.photo:
+        if request.FILES:
             User.objects.get(pk=self.object.pk).photo.delete()
         return super().post(request, *args, **kwargs)
 
