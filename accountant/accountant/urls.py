@@ -29,6 +29,8 @@ urlpatterns = [
     # path('captcha/', include('captcha.urls')),
 
     path('admin/', admin.site.urls),
+    # path('accounts/', include('allauth.urls')),
+
     path("", include("information.urls")),
     path("users/", include("users.urls", namespace="users")),
 ]

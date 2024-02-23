@@ -18,6 +18,7 @@ from django.contrib import messages
 from users.tokens import account_activation_token
 from django.core.cache import cache
 
+
 # Активация аккаунта пользователя после подверждения почты
 def activate(request, uidb64, token):
     User = get_user_model()

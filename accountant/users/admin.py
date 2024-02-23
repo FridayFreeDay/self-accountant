@@ -20,7 +20,7 @@ class WalletAdmin(admin.TabularInline):
 class UserAdmin(admin.ModelAdmin):
     # Снаружи
     list_display = ("id", "username", "email")
-    list_display_links = ["username"]
+    list_display_links = ["username", "id"]
     # Внутри
     save_on_top = True
     fields = [("username", "email"), "photo", "date_birth", 
