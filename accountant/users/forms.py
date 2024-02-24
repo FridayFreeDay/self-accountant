@@ -4,7 +4,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from information.models import Category
 from django.core.validators import MaxValueValidator
-# from captcha.fields import CaptchaField
+# from django_recaptcha.fields import ReCaptchaField
+# from django_recaptcha.widgets import ReCaptchaV3
 
 from users.models import Wallet
 
@@ -32,7 +33,9 @@ class RegisterUserForm(UserCreationForm):
     password2 = forms.CharField(
         max_length=255, label="Подтвердите пароль:", widget=forms.PasswordInput(attrs={"class": "form-class-active"})
     )
-    # captcha = CaptchaField()
+    # captcha = ReCaptchaField(
+    #     widget=ReCaptchaV3,
+    # )
 
     # Определяем модель пользователя для формы, поля для отображения, переопределяем названия
     # некоторых полей, переопределяем стандартный вид некоторых полей
