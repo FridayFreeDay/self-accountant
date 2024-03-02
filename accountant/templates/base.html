@@ -16,12 +16,19 @@
     <title> {{title}} </title>
 </head>
 <body>
+    <header>
+        <nav class="header">
+            <div class="container-fluid">
+            <a class="navbar-brand" href="{% url "home" %}">
+                <img src="{% static "img/favicon.ico" %}" alt="Bootstrap" width="40" height="40">
+                SELF ACCOUNTANT
+              </a>
+            </div>
+          </nav>
+    </header>
     <div class="row">
         <div class="col-3">
             <nav id="menu" role="navigation">
-                <a class="navbar-brand" href="{% url "home" %}">
-                    <img src="{% static "img/favicon.ico" %}" alt="Bootstrap" width="30" height="30">
-                </a>
                 <ul>
                     {% for m in header %}
                         <li class="nav-item">
@@ -92,7 +99,7 @@
                     {% endfor %}
                 </ul>
                 <div class="line"></div>
-                <p class="text-center" style="color: white">&copy; 2024 self accountant</p>
+                <p class="text-center" style="color: color-white">&copy; 2024 self accountant</p>
             </div>
         </div>
     </footer>

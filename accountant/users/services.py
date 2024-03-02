@@ -323,7 +323,7 @@ def chart(request):
         legend= dict(
             font=dict(
             size=14,
-            color="white",
+            color="black",
             ),
             orientation="h",
             yanchor="bottom",
@@ -339,29 +339,29 @@ def chart(request):
             'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top',
-            'font': {'size': 24, 'family': 'system-ui', 'color': 'white'},
+            'font': {'size': 24, 'family': 'system-ui', 'color': 'black'},
         })
 
-    colors = ['#AEC670', '#AEC09A', '#778D45', '#344C11']
+    colors = ['#d0e6dc', '#e6fff5', '#b8ccc4', '#8a9993', '#7d8b85', '#9fb1a9', '#717d78', '#424947']
 
     fig.update_traces(textfont_size=16, 
                       marker= dict(colors=colors, line= dict(color='#000000', width=1)),
                       hovertemplate='Категория: %{label}<br>Сумма: %{value}')
     chart = fig.to_html(full_html=False)
 
-    fig1 = px.bar(x=x, y=values, color_discrete_sequence=['#AEC670'])
+    fig1 = px.bar(x=x, y=values, color_discrete_sequence=['#d0e6dc'])
     fig1.update_layout(
         xaxis=dict(
             title='Дата',
-            title_font=dict(size=18, color="white"),
+            title_font=dict(size=18, color="black"),
             tickformat='%d.%m.%Y', # Формат даты (день.месяц.год)
             tickmode='linear', # Линейный режим для дат(чтобы по 2 раза не отображалось)
-            tickfont=dict(color="white")
+            tickfont=dict(color="black")
         ),
         yaxis=dict(
             title='Сумма',
-            title_font=dict(size=18, color="white"),
-            tickfont=dict(color="white"),
+            title_font=dict(size=18, color="black"),
+            tickfont=dict(color="black"),
             gridwidth=1),
 
         bargap=0.5,
@@ -372,7 +372,7 @@ def chart(request):
             'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top',
-            'font': {'size': 24, 'family': 'system-ui', 'color': 'white'},
+            'font': {'size': 24, 'family': 'system-ui', 'color': 'black'},
         })
     fig1.update_traces(hovertemplate='Сумма: %{y}')
 

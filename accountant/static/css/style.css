@@ -14,7 +14,7 @@ input[type='file'] {
 table{ 
   overflow: hidden; 
   border-radius: 50px;
-  box-shadow: 0px 0px 20px 5px rgba(3, 120, 174, 0.8);
+  box-shadow: 0px 0px 10px 5px var(--dark_accent);
 }​
 
 body{
@@ -46,7 +46,7 @@ a {
   width:250px;
   height:250px;
   border-radius: 50%;
-  box-shadow: 0px 0px 20px 2px rgba(3, 120, 174, 0.8);
+  box-shadow: 0px 0px 20px 2px var(--dark_accent);
   margin-left: auto; 
   margin-right: auto;
 }
@@ -92,7 +92,7 @@ a {
   margin: 0 auto;
   height: 0;
   color: rgba(0, 0, 0, 0);
-  background: #f8f9fa;
+  background: var(--pr);
   line-height: 18px;
   padding: 0 30px;
   box-sizing: border-box;
@@ -100,7 +100,6 @@ a {
   overflow: hidden;
   font-family: inherit; 
   font-size: 16px;
-  box-shadow: 0px 0px 20px 2px rgba(3, 120, 174, 0.8);
 }
 .acor-container .acor-body p {
   margin: 0 0 10px;
@@ -120,7 +119,6 @@ a {
   margin: 0 0 5px;
   transition: color .35s;
   border-radius: 25px;
-  box-shadow: 0px 0px 20px 5px rgba(3, 120, 174, 0.8);
 }
 .acor-container label:hover {
   color: white;
@@ -150,21 +148,20 @@ a {
 /* Боковое меню */
 
 #menu {
-box-shadow: 10px 5px 5px var(--accent);
-border-radius: 0 100px 100px 0;
+font-size: 16px;
 position: fixed;
 top: 0;
 left: 0px;
-width: 270px;
+width: 200px;
 height: 100%;
 padding: 50px 30px;
 text-align: center;
-background: linear-gradient(to bottom, #051937, #082858, #013e62, #004d7a);
+background: var(--pr);
 }
 
 #menu ul {
   padding: 0;
-  margin-top: 30px;
+  margin-top: 80px;
 }
 #menu ul li {
 list-style-type:none;
@@ -172,47 +169,36 @@ list-style-type:none;
 
 #menu ul li a {
 display: block;
-font-weight: 900;
 line-height: 50px;
-transition: all .3s ease;
-text-decoration: none;
-text-transform: uppercase;
-color: white;
+color: var(--font);
 border-top: 1px solid #eee;
 }
 
 #menu ul li a.active {
 display: block;
-font-weight: 900;
 line-height: 50px;
-transition: all .3s ease;
-text-decoration: none;
-text-transform: uppercase;
 color: var(--accent);
+font-weight: 700;
 border-top: 1px solid #eee;
 }
 #menu ul li a.active:hover {
 display: block;
-font-weight: 900;
 line-height: 50px;
-transition: all .3s ease;
-text-decoration: none;
-text-transform: uppercase;
 color: var(--dark_accent);
 border-top: 1px solid #eee;
 }
 
 #menu ul li a:hover {
-  letter-spacing: 1px;
   color: rgb(190, 190, 190);
 }
 
 :root{
-    --dark_pr:#2e5d8b;
-    --pr:#336699;
-    --accent:#778D45;
-    --dark_accent:#344C11;
-    --back: #111f28;
+    --dark_pr:#989898;
+    --pr:#fefefe;
+    --accent:#4c4c4c;
+    --dark_accent:#262626;  
+    --back: #f5f5f5;
+    --font: black;
   }
 
 footer, section{
@@ -220,11 +206,23 @@ footer, section{
   }
 footer{
     padding: 30px;
-    background: linear-gradient(to bottom, #111f28, #01314c, #013d61, #004d7a)
+    background: var(--back);
   }
 
 header{
-    background: #0d3045;
+    position: fixed;
+    z-index: 100;
+    background: var(--pr);
+    height: 60px;
+    width: 100%;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+header a {
+    position: absolute;
+    top: 20%;
+    text-align: center;
 }
 
 
@@ -255,7 +253,7 @@ header{
 
 .pagination > li > a {
     background-color: var(--pr);
-    color: white;
+    color: var(--font);
 }
 
 .pagination > li > a:focus,
@@ -276,7 +274,7 @@ header{
 
 .pagination > .active > a:hover
 {
-    color: white;
+    color: var(--dark_pr);
     background-color: var(--accent) !Important;
     border: solid 1px var(--back);
 }
@@ -409,7 +407,7 @@ form {
 
 /* Цвет */
 .color-white{
-  color: white;
+  color: var(--font);
 }
 .color-accent{
   color: var(--accent);
@@ -443,12 +441,12 @@ footer{
 footer .line{
   width: 800px;
   height: 1px;
-  background-color: white;
+  background-color: var(--dark_accent);
   margin: 15px auto 30px;
 }
 
 .a-footer{
-  color: white;
+  color: var(--font);
   margin: 0 30px;
 }
 .a-footer:hover {
