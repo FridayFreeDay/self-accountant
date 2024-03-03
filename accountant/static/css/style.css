@@ -213,7 +213,7 @@ header{
     position: fixed;
     z-index: 100;
     background: var(--pr);
-    height: 60px;
+    height: 70px;
     width: 100%;
     font-size: 24px;
     font-weight: 700;
