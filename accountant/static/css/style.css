@@ -429,8 +429,8 @@ form {
 }
 .line{
   width: 300px;
-  height: 3px;
-  background-color: white;
+  height: 1px;
+  background-color: var(--font);
   margin: 15px auto 30px;
 }
 

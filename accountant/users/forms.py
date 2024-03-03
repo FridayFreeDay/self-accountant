@@ -123,7 +123,8 @@ class FilterForm(forms.Form):
     years=tuple(range(this_year - 3, this_year+1))
     start_date = forms.DateField(widget=forms.SelectDateWidget(years=years), label="Дата | От")
     end_date =  forms.DateField(widget=forms.SelectDateWidget(years=years), label="Дата | До", initial=datetime.date.today())
-    cats = forms.MultipleChoiceField(choices=tuple(enumerate(Category.objects.values_list("name", flat=True),1)),
+    cats = forms.MultipleChoiceField(choices=tuple(enumerate(Category.objects.values_list("name", flat=True),
+                                                             Category.objects.first().id)),
                                       widget=forms.CheckboxSelectMultiple(), label="Категория", initial=1)
     start_sum = forms.DecimalField(label="Сумма | от", initial=0)
     end_sum = forms.DecimalField(label="Сумма | до", initial=999999999999)
