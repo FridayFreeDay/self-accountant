@@ -113,7 +113,7 @@ a {
   color: #BEBEBE;
   font-weight: 300;
   box-sizing: border-box;
-  z-index: 100;
+  z-index: 1;
   font-family: inherit;   
   font-size: 18px;
   margin: 0 0 5px;
@@ -209,10 +209,23 @@ footer{
     background: var(--back);
   }
 
+/* Dark mode */
+
+.darkmode-layer, .darkmode-toggle {
+  z-index: 1;
+}
+
+.photo {
+  z-index: 2;
+}
+
+/*  */
+
 header{
     position: fixed;
-    z-index: 100;
-    background: var(--pr);
+    z-index: 3;
+    background: #010101;
+    color: #d9d9d9;
     height: 70px;
     width: 100%;
     font-size: 24px;

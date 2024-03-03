@@ -13,9 +13,9 @@
                     {{ title }}
                 </h2>
                 {% if user.photo %}
-                    <p class="profile mb-5"><img src="{{user.photo.url}}"></p>
+                    <p class="profile mb-5"><img class="photo" src="{{user.photo.url}}"></p>
                 {% else %}
-                    <p class="profile mb-5"><img src="{% static "img/default.png" %}"></p>
+                    <p class="profile mb-5"><img class="photo" src="{% static "img/default.png" %}"></p>
                 {% endif %}
                 <form method="post" class="text-center" enctype="multipart/form-data">
                     {% csrf_token %}

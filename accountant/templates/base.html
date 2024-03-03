@@ -12,21 +12,19 @@
     <script src="{% static 'bootstrap/js/bootstrap.min.js'%}"></script>
     <script defer src="{% static 'js/jquery-3.7.0.min.js'%}"></script>
     <script defer src="{% static 'js/script.js'%}"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@bufferhead/nightowl@0.0.14/dist/nightowl.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+    
     <title> {{title}} </title>
 </head>
 <body>
-    <header style="position: sticky; top: 0%;">
-        <script type="module">
-            import { createNightowl } from '@bufferhead/nightowl'
-        
-            createNightowl({
-                defaultMode: 'dark',
-                toggleButtonMode: 'newState'
-            })
+    <header>
+        <script>
+            function addDarkmodeWidget() {
+                new Darkmode().showWidget();
+            }
+            window.addEventListener('load', addDarkmodeWidget);
         </script>
-
+         
         <nav class="header">
             <div class="container-fluid">
             <a class="navbar-brand" href="{% url "home" %}">
@@ -50,7 +48,6 @@
                             {% endif %}
                         </li>
                     {% endfor %}
-        
                 </ul>
             
                 <ul style="position: sticky; top: 75%;">
