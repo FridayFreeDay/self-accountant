@@ -1,3 +1,4 @@
+import datetime
 from django.contrib import messages
 from django.core.cache import cache
 from django.http import HttpResponseNotFound
@@ -25,12 +26,15 @@ def index(request):
 # Функция добавления записи о трате
 @login_required
 def add_record(request):
+    current_datetime = datetime.datetime.today()
     if request.method == "POST":
         form = RecordForm(request.POST)
         if form.is_valid():
             f = form.cleaned_data
             f["buyer"] = request.user
-            expenses = sum(Record.objects.filter(buyer=request.user).values_list("amount", flat=True)) + f["amount"]
+            expenses = sum(Record.objects.filter(buyer=request.user,
+                                                    time_create__month = current_datetime.month,
+                                                    time_create__year = current_datetime.year).values_list("amount", flat=True)) + f["amount"]
             if expenses <= Wallet.objects.get(owner=request.user).revenues:
                 cache.delete(f"expenses_{request.user.id}")
                 cache.delete(f"record_{request.user.id}")
