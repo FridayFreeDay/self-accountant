@@ -347,7 +347,7 @@ def chart(request):
     fig.update_traces(textfont_size=16, 
                       marker= dict(colors=colors, line= dict(color='#000000', width=1)),
                       hovertemplate='Категория: %{label}<br>Сумма: %{value}')
-    chart = fig.to_html(full_html=False)
+    chart = fig.to_html(full_html=False, config = {'displayModeBar': False})
 
     fig1 = px.bar(x=x, y=values, color_discrete_sequence=['#d0e6dc'])
     fig1.update_layout(
@@ -376,6 +376,6 @@ def chart(request):
         })
     fig1.update_traces(hovertemplate='Сумма: %{y}')
 
-    chart1 = fig1.to_html(full_html=False)
+    chart1 = fig1.to_html(full_html=False, config = {'displayModeBar': False})
 
     return chart, chart1, msg
